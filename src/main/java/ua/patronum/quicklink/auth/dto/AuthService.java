@@ -7,9 +7,9 @@ import ua.patronum.quicklink.auth.dto.login.LoginRequest;
 import ua.patronum.quicklink.auth.dto.login.LoginResponse;
 import ua.patronum.quicklink.auth.dto.registration.RegistrationRequest;
 import ua.patronum.quicklink.auth.dto.registration.RegistrationResponse;
-import ua.patronum.quicklink.model.User;
-import ua.patronum.quicklink.security.JwtUtil;
-import ua.patronum.quicklink.service.UserService;
+import ua.patronum.quicklink.auth.dto.model.User;
+import ua.patronum.quicklink.auth.dto.security.JwtUtil;
+import ua.patronum.quicklink.auth.dto.service.UserService;
 
 import java.util.Objects;
 import java.util.Optional;

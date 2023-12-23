@@ -1,12 +1,12 @@
-package ua.patronum.quicklink.security;
+package ua.patronum.quicklink.auth.dto.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ua.patronum.quicklink.model.User;
-import ua.patronum.quicklink.repository.UserRepository;
+import ua.patronum.quicklink.auth.dto.model.User;
+import ua.patronum.quicklink.auth.dto.repository.UserRepository;
 
 import java.util.Collections;
 

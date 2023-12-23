@@ -1,9 +1,9 @@
-package ua.patronum.quicklink.service;
+package ua.patronum.quicklink.auth.dto.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.patronum.quicklink.model.User;
-import ua.patronum.quicklink.repository.UserRepository;
+import ua.patronum.quicklink.auth.dto.model.User;
+import ua.patronum.quicklink.auth.dto.repository.UserRepository;
 
 import java.util.Optional;
 
@@ -14,11 +14,7 @@ public class UserService {
 
     public User findByUsername(String username) {
         Optional<User> user = repository.findByUsername(username);
-
-        if (user.isEmpty()) {
-            return null;
-        }
-        return user.get();
+        return user.orElse(null);
     }
 
     public void saveUser(User user) {

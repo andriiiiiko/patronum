@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.security;
+package ua.patronum.quicklink.auth.dto.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

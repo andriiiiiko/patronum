@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.model;
+package ua.patronum.quicklink.auth.dto.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
