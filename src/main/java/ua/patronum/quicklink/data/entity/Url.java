@@ -27,7 +27,7 @@ public class Url {
     private String shortUrl;
 
     @Column(name = "date_created", nullable = false)
-    private LocalDateTime dateCreated;
+    private LocalDateTime dateCreated = LocalDateTime.now();
 
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
