@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+
+    quick:
+      build: .
+      ports:
+        - 9999:9999
+
+    pgadmin:
+      image: dpage/pgadmin4
+      restart: always
+      ports:
+        - 5050:80
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@example.com
+        PGADMIN_DEFAULT_PASSWORD: admin
