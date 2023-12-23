@@ -18,6 +18,7 @@ import java.util.function.Function;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
+
     private String SECRET_KEY = "SECRETKEYSECRETKEYSECRETKEYSECRETKEYSECRETKEYSECRETKEY";
 
     private final UserDetailsService userDetailsService;

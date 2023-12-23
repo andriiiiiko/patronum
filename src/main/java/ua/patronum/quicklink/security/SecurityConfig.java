@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
     private final AuthenticationConfiguration authenticationConfiguration;
@@ -35,9 +36,9 @@ public class SecurityConfig {
                         .requestMatchers("/project/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .sessionManagement()
+                .sessionManagement()// это не ошибка. не обращать внимание, старый код
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .and()// это тоже не ошибка
                 .addFilterBefore(new JwtRequestFilter(authenticationManager(), userDetailsService, jwtUtil),
                         UsernamePasswordAuthenticationFilter.class);
         return http.build();

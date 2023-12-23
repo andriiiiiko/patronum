@@ -14,6 +14,7 @@ import ua.patronum.quicklink.auth.dto.registration.RegistrationResponse;
 @RequiredArgsConstructor
 @RequestMapping("/project/auth")
 public class AuthController {
+
     private final AuthService authService;
 
     @PostMapping("/register")

@@ -17,13 +17,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private static final int MAX_USER_ID_LENGTH = 50;
     private static final int MAX_PASSWORD_LENGTH = 50;
-
-    public enum Race {
-        HUMAN,
-        ORK
-    }
+    private static final int MIN_PASSWORD_LENGTH = 3;
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -79,7 +76,9 @@ public class AuthService {
             return Optional.of(RegistrationResponse.Error.INVALID_USERNAME);
         }
 
-        if (Objects.isNull(request.getPassword()) || request.getPassword().length() > MAX_PASSWORD_LENGTH) {
+        if (Objects.isNull(request.getPassword())
+                || request.getPassword().length() < MIN_PASSWORD_LENGTH
+                || request.getPassword().length() > MAX_PASSWORD_LENGTH) {
             return Optional.of(RegistrationResponse.Error.INVALID_PASSWORD);
         }
 

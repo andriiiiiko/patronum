@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import java.io.IOException;
 
 public class JwtRequestFilter extends BasicAuthenticationFilter {
+
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
