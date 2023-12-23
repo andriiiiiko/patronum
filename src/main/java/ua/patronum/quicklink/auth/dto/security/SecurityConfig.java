@@ -19,8 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
@@ -32,15 +32,18 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/project/auth/**").permitAll()
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/v1/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .sessionManagement()// это не ошибка. не обращать внимание, старый код
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()// это тоже не ошибка
-                .addFilterBefore(new JwtRequestFilter(authenticationManager(), userDetailsService, jwtUtil),
-                        UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(
+                        new JwtRequestFilter(authenticationManager(), userDetailsService, jwtUtil),
+                        UsernamePasswordAuthenticationFilter.class
+                );
+
         return http.build();
     }
 

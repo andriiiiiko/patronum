@@ -20,11 +20,11 @@ public class AuthService {
 
     private static final int MAX_USER_ID_LENGTH = 50;
     private static final int MAX_PASSWORD_LENGTH = 50;
-    private static final int MIN_PASSWORD_LENGTH = 3;
+    private static final int MIN_PASSWORD_LENGTH = 8;
 
+    private final JwtUtil jwtUtil;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
 
     public RegistrationResponse register(RegistrationRequest request) {
         User existingUser = userService.findByUsername(request.getUsername());
@@ -82,7 +82,7 @@ public class AuthService {
             return Optional.of(RegistrationResponse.Error.INVALID_PASSWORD);
         }
 
-        if (Objects.isNull(request.getConfirmpassword()) || !request.getPassword().equals(request.getConfirmpassword())) {
+        if (Objects.isNull(request.getConfirmPassword()) || !request.getPassword().equals(request.getConfirmPassword())) {
             return Optional.of(RegistrationResponse.Error.INVALID_CONFIRM_PASSWORD);
         }
 

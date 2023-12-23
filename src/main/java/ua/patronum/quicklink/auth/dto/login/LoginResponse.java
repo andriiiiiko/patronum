@@ -7,14 +7,14 @@ import lombok.Data;
 @Data
 public class LoginResponse {
 
-    private Error error;
-    private String authToken;
-
     public enum Error {
         OK,
         INVALID_USER_NAME,
         INVALID_PASSWORD
     }
+
+    private Error error;
+    private String authToken;
 
     public static LoginResponse success(String authToken) {
         return builder().error(Error.OK).authToken(authToken).build();

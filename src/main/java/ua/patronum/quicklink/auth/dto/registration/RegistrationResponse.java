@@ -6,7 +6,6 @@ import lombok.Data;
 @Builder
 @Data
 public class RegistrationResponse {
-    private Error error;
 
     public enum Error {
         OK,
@@ -16,6 +15,8 @@ public class RegistrationResponse {
         INVALID_CONFIRM_PASSWORD,
         INVALID_RACE
     }
+
+    private Error error;
 
     public static RegistrationResponse success() {
         return builder().error(Error.OK).build();

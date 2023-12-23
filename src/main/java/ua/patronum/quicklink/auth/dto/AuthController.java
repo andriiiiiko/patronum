@@ -12,7 +12,7 @@ import ua.patronum.quicklink.auth.dto.registration.RegistrationResponse;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthService authService;
