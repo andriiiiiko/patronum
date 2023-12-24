@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  quick:
+    build: .
+    ports:
+      - "80:9999"
+    env_file:
+      - variables.env
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:81"
+    env_file:
+      - variables.env
