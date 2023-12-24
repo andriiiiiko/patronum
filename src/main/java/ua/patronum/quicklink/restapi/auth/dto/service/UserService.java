@@ -1,9 +1,9 @@
-package ua.patronum.quicklink.auth.dto.service;
+package ua.patronum.quicklink.restapi.auth.dto.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.patronum.quicklink.auth.dto.model.User;
-import ua.patronum.quicklink.auth.dto.repository.UserRepository;
+import ua.patronum.quicklink.data.entity.User;
+import ua.patronum.quicklink.data.repository.UserRepository;
 
 import java.util.Optional;
 

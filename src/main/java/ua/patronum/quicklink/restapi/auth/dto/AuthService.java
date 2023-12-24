@@ -1,19 +1,19 @@
-package ua.patronum.quicklink.auth.dto;
+package ua.patronum.quicklink.restapi.auth.dto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ua.patronum.quicklink.auth.dto.login.LoginRequest;
-import ua.patronum.quicklink.auth.dto.login.LoginResponse;
-import ua.patronum.quicklink.auth.dto.registration.RegistrationRequest;
-import ua.patronum.quicklink.auth.dto.registration.RegistrationResponse;
-import ua.patronum.quicklink.auth.dto.model.User;
-import ua.patronum.quicklink.auth.dto.security.JwtUtil;
-import ua.patronum.quicklink.auth.dto.service.UserService;
+import ua.patronum.quicklink.data.entity.User;
+import ua.patronum.quicklink.restapi.auth.dto.login.LoginRequest;
+import ua.patronum.quicklink.restapi.auth.dto.login.LoginResponse;
+import ua.patronum.quicklink.restapi.auth.dto.registration.RegistrationRequest;
+import ua.patronum.quicklink.restapi.auth.dto.registration.RegistrationResponse;
+import ua.patronum.quicklink.restapi.auth.dto.security.JwtUtil;
+import ua.patronum.quicklink.restapi.auth.dto.service.UserService;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.*;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
