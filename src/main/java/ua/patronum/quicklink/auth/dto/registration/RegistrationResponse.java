@@ -12,8 +12,7 @@ public class RegistrationResponse {
         USER_ALREADY_EXISTS,
         INVALID_USERNAME,
         INVALID_PASSWORD,
-        INVALID_CONFIRM_PASSWORD,
-        INVALID_RACE
+        INVALID_CONFIRM_PASSWORD
     }
 
     private Error error;
