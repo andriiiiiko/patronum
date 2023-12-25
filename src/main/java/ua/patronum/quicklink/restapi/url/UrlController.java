@@ -1,7 +1,10 @@
 package ua.patronum.quicklink.restapi.url;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/urls")
@@ -10,10 +13,10 @@ public class UrlController {
     private final UrlService urlService;
 
     @PostMapping("/create")
-    public CreateUrlResponse createUrl(@RequestParam CreateUrlRequest request) {
-        return urlService.createUrl(request);
+    public CreateUrlResponse createUrl(Principal principal, @RequestBody CreateUrlRequest request) {
+        return urlService.createUrl(principal.getName(),request);
     }
-
+    @Transactional
     @GetMapping("/view/all")
     public GetAllUrlsResponse getAllUrls() {
         return urlService.getAllUrls();

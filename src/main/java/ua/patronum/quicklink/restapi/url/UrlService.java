@@ -1,5 +1,6 @@
 package ua.patronum.quicklink.restapi.url;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.patronum.quicklink.data.entity.Url;
@@ -11,19 +12,30 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UrlService {
     private final UrlRepository urlRepository;
     private final UserService userService;
+    private List<Url> allUrls;
 
+    @Transactional
     public GetAllUrlsResponse getAllUrls() {
-        List<Url> allUrls = urlRepository.findAll();
+        allUrls = urlRepository.findAll();
         if (allUrls.isEmpty()) {
             return GetAllUrlsResponse.failed(GetAllUrlsResponse.Error.EMPTY_LIST);
         }
-        return GetAllUrlsResponse.success(allUrls);
+
+        List<UrlDto> urlDtos = allUrls.stream()
+                .map(url -> UrlDto.builder()
+                        .originalUrl(url.getOriginalUrl())
+                        .shortUrl(url.getShortUrl())
+                        .build())
+                .collect(Collectors.toList());
+
+        return GetAllUrlsResponse.success(urlDtos);
     }
 
     public GetAllUserUrlResponse getAllUserUrls(String username) {
@@ -43,9 +55,9 @@ public class UrlService {
         return GetAllActiveUrlResponse.success(activeUrls);
     }
 
-    public CreateUrlResponse createUrl(CreateUrlRequest request) {
+    public CreateUrlResponse createUrl(String username, CreateUrlRequest request) {
 
-        User user = userService.findByUsername(request.getUsername());
+        User user = userService.findByUsername(username);
         Optional<CreateUrlResponse.Error> validationError = validateCreateFields(request);
 
         if (validationError.isPresent()) {
