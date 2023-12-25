@@ -33,6 +33,7 @@ public class User {
     @Column(nullable = false)
     private String role;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Url> urls = new HashSet<>();
 }
