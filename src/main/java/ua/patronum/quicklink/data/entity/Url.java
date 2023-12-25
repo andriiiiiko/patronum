@@ -38,4 +38,8 @@ public class Url {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public void setExpirationDate() {
+        this.expirationDate = this.dateCreated.plusDays(30);
+    }
 }
