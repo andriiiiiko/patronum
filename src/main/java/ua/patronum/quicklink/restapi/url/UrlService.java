@@ -6,6 +6,7 @@ import ua.patronum.quicklink.data.entity.Url;
 import ua.patronum.quicklink.data.entity.User;
 import ua.patronum.quicklink.data.repository.UrlRepository;
 import ua.patronum.quicklink.restapi.auth.dto.service.UserService;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -43,9 +44,9 @@ public class UrlService {
         return GetAllActiveUrlResponse.success(activeUrls);
     }
 
-    public CreateUrlResponse createUrl(CreateUrlRequest request) {
+    public CreateUrlResponse createUrl(String username, CreateUrlRequest request) {
 
-        User user = userService.findByUsername(request.getUsername());
+        User user = userService.findByUsername(username);
         Optional<CreateUrlResponse.Error> validationError = validateCreateFields(request);
 
         if (validationError.isPresent()) {
