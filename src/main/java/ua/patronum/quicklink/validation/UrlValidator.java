@@ -2,7 +2,6 @@ package ua.patronum.quicklink.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import jakarta.validation.constraints.Pattern;
 
 public class UrlValidator implements ConstraintValidator<ValidUrl, String> {
 
