@@ -13,13 +13,13 @@ public class DeleteUrlResponse {
         INVALID_ACCESS,
     }
 
-    private DeleteUrlResponse.Error error;
+    private Error error;
 
     public static DeleteUrlResponse success() {
-        return builder().error(DeleteUrlResponse.Error.OK).build();
+        return builder().error(Error.OK).build();
     }
 
-    public static DeleteUrlResponse failed(DeleteUrlResponse.Error error) {
+    public static DeleteUrlResponse failed(Error error) {
         return builder().error(error).build();
     }
 }

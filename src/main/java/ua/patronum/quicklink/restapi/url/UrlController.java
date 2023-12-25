@@ -30,7 +30,7 @@ public class UrlController {
     }
 
     @PostMapping("/delete/{id}")
-    public DeleteUrlResponse deleteUrlById(@RequestParam Long id) {
+    public DeleteUrlResponse deleteUrlById(@PathVariable Long id) {
         return urlService.deleteUrlById(id);
     }
 }

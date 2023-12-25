@@ -9,20 +9,20 @@ import java.util.List;
 @Data
 @Builder
 public class GetAllActiveUrlResponse {
-    private List<Url> activeUrls;
 
     public enum Error {
         OK,
         EMPTY_LIST,
     }
+    private List<Url> activeUrls;
 
-    private GetAllActiveUrlResponse.Error error;
+    private Error error;
 
     public static GetAllActiveUrlResponse success(List<Url> urls) {
-        return builder().activeUrls(urls).error(GetAllActiveUrlResponse.Error.OK).build();
+        return builder().activeUrls(urls).error(Error.OK).build();
     }
 
-    public static GetAllActiveUrlResponse failed(GetAllActiveUrlResponse.Error error) {
+    public static GetAllActiveUrlResponse failed(Error error) {
         return builder().error(error).build();
     }
 }
