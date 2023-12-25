@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ua.patronum.quicklink.validation.ValidUrl;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Builder
+@Builder(toBuilder = true)
 @Table(name = "urls")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class Url {
     private Long id;
 
     @Column(name = "original_url", nullable = false)
+    @ValidUrl(message = "Invalid URL format")
     private String originalUrl;
 
     @Column(name = "short_url", nullable = false)
