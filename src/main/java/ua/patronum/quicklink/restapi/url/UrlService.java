@@ -6,7 +6,6 @@ import ua.patronum.quicklink.data.entity.Url;
 import ua.patronum.quicklink.data.entity.User;
 import ua.patronum.quicklink.data.repository.UrlRepository;
 import ua.patronum.quicklink.restapi.auth.dto.service.UserService;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
