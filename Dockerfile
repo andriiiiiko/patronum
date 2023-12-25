@@ -1,16 +1,21 @@
-FROM debian:bullseye-slim
+FROM ubuntu:20.04
 
 RUN apt-get update && apt-get install -y \
     openjdk-17-jre-headless \
-    findutils \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /usr/src/quick
+RUN apt-get update && apt-get install -y \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY . .
+WORKDIR /app
+COPY . /app
 
-RUN chmod +x gradlew
+RUN chmod +x ./gradlew
 
 RUN ./gradlew build
 
 CMD ["java", "-jar", "build/libs/quick-link-0.0.1.jar"]
+
+EXPOSE 80
+

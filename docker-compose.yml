@@ -5,7 +5,7 @@ services:
   quick:
     build: .
     ports:
-      - "80:9999"
+      - "80:80"
     env_file:
       - variables.env
 
