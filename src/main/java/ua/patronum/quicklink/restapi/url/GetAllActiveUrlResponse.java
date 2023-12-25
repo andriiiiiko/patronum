@@ -14,6 +14,7 @@ public class GetAllActiveUrlResponse {
         OK,
         EMPTY_LIST,
     }
+
     private List<Url> activeUrls;
 
     private Error error;

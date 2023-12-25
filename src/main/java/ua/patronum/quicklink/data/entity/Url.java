@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Url {
 
+    private static final int EXPIRATION_DAYS = 30;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,6 +42,6 @@ public class Url {
     private User user;
 
     public void setExpirationDate() {
-        this.expirationDate = this.dateCreated.plusDays(30);
+        this.expirationDate = this.dateCreated.plusDays(EXPIRATION_DAYS);
     }
 }

@@ -16,6 +16,9 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class UrlService {
+    private static final int SHORT_URL_LENGTH = 6;
+    private static final String URL_PREFIX = "https://";
+    private final Random random = new Random();
     private final UrlRepository urlRepository;
     private final UserService userService;
 
@@ -76,17 +79,15 @@ public class UrlService {
     }
 
     public String generateShortUrl(String originalUrl) {
-        String afterHttps = originalUrl.substring("https://".length());
-
-        Random random = new Random();
+        String afterHttps = originalUrl.substring(URL_PREFIX.length());
         StringBuilder randomLetters = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < SHORT_URL_LENGTH; i++) {
             int randomIndex = random.nextInt(afterHttps.length());
             char randomChar = afterHttps.charAt(randomIndex);
             randomLetters.append(randomChar);
         }
 
-        return "https://" + randomLetters;
+        return URL_PREFIX + randomLetters;
     }
 
     private Optional<CreateUrlResponse.Error> validateCreateFields(CreateUrlRequest request) {

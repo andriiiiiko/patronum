@@ -14,6 +14,7 @@ public class GetAllUrlsResponse {
         OK,
         EMPTY_LIST,
     }
+
     private List<Url> urls;
 
     private Error error;
