@@ -9,6 +9,7 @@ import java.security.Principal;
 @RequestMapping("/api/v1/urls")
 @RequiredArgsConstructor
 public class UrlController {
+
     private final UrlService urlService;
 
     @PostMapping("/create")
@@ -26,13 +27,18 @@ public class UrlController {
         return urlService.getAllUserUrls(username);
     }
 
-    @GetMapping("/view/all/active")
-    public GetAllActiveUrlResponse getAllActiveUrl() {
-        return urlService.getAllActiveUrlResponse();
+    @GetMapping("/view/all/user/active")
+    public GetAllActiveUrlResponse getAllActiveUrl(Principal principal) {
+        return urlService.getAllUserActiveUrl(principal.getName());
     }
 
     @PostMapping("/delete/{id}")
     public DeleteUrlResponse deleteUrlById(@PathVariable Long id) {
         return urlService.deleteUrlById(id);
+    }
+
+    @PostMapping("/view/redirect")
+    public RedirectResponse redirectOriginalUrl(@RequestBody RedirectRequest request) {
+        return urlService.redirectOriginalUrl(request);
     }
 }

@@ -44,4 +44,8 @@ public class Url {
     public void setExpirationDate() {
         this.expirationDate = this.dateCreated.plusDays(EXPIRATION_DAYS);
     }
+
+    public void incrementVisitCount() {
+        this.visitCount++;
+    }
 }

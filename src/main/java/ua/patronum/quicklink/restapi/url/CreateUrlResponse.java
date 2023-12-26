@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class CreateUrlResponse {
+
     public enum Error {
         OK,
         INVALID_OLD_VALID_URL,

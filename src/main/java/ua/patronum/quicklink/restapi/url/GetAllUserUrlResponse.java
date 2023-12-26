@@ -2,7 +2,6 @@ package ua.patronum.quicklink.restapi.url;
 
 import lombok.Builder;
 import lombok.Data;
-import ua.patronum.quicklink.data.entity.Url;
 
 import java.util.List;
 
@@ -12,14 +11,13 @@ public class GetAllUserUrlResponse {
 
     public enum Error {
         OK,
-        EMPTY_LIST,
     }
 
-    private List<Url> urls;
+    private List<UrlDto> urls;
 
     private Error error;
 
-    public static GetAllUserUrlResponse success(List<Url> urls) {
+    public static GetAllUserUrlResponse success(List<UrlDto> urls) {
         return builder().urls(urls).error(Error.OK).build();
     }
 

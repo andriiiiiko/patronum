@@ -7,44 +7,67 @@ import ua.patronum.quicklink.data.entity.User;
 import ua.patronum.quicklink.data.repository.UrlRepository;
 import ua.patronum.quicklink.restapi.auth.dto.service.UserService;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UrlService {
+
     private static final int SHORT_URL_LENGTH = 6;
     private static final String URL_PREFIX = "https://";
     private final Random random = new Random();
     private final UrlRepository urlRepository;
     private final UserService userService;
+    private List<Url> userUrls;
 
     public GetAllUrlsResponse getAllUrls() {
         List<Url> allUrls = urlRepository.findAll();
-        if (allUrls.isEmpty()) {
-            return GetAllUrlsResponse.failed(GetAllUrlsResponse.Error.EMPTY_LIST);
-        }
-        return GetAllUrlsResponse.success(allUrls);
+
+        List<UrlDto> urlDtos = allUrls.stream()
+                .map(url -> UrlDto.builder()
+                        .originalUrl(url.getOriginalUrl())
+                        .shortUrl(url.getShortUrl())
+                        .build())
+                .collect(Collectors.toList());
+
+        return GetAllUrlsResponse.success(urlDtos);
     }
 
     public GetAllUserUrlResponse getAllUserUrls(String username) {
         User user = userService.findByUsername(username);
-        List<Url> userUrls = urlRepository.findByUser(user);
-        if (userUrls.isEmpty()) {
-            return GetAllUserUrlResponse.failed(GetAllUserUrlResponse.Error.EMPTY_LIST);
-        }
-        return GetAllUserUrlResponse.success(userUrls);
+        userUrls = urlRepository.findByUser(user);
+        List<UrlDto> urlDtos = userUrls.stream()
+                .map(url -> UrlDto.builder()
+                        .originalUrl(url.getOriginalUrl())
+                        .shortUrl(url.getShortUrl())
+                        .build())
+                .collect(Collectors.toList());
+        return GetAllUserUrlResponse.success(urlDtos);
     }
 
-    public GetAllActiveUrlResponse getAllActiveUrlResponse() {
-        List<Url> activeUrls = urlRepository.findByExpirationDateAfter(LocalDateTime.now());
-        if (activeUrls.isEmpty()) {
-            return GetAllActiveUrlResponse.failed(GetAllActiveUrlResponse.Error.EMPTY_LIST);
-        }
-        return GetAllActiveUrlResponse.success(activeUrls);
+    public GetAllActiveUrlResponse getAllUserActiveUrl(String username) {
+        User user = userService.findByUsername(username);
+        userUrls = urlRepository.findByUser(user);
+
+        List<UrlDto> urlDtos = userUrls.stream()
+                .filter(url -> url.getExpirationDate() == null || url.getExpirationDate().isAfter(LocalDateTime.now()))
+                .map(url -> UrlDto.builder()
+                        .originalUrl(url.getOriginalUrl())
+                        .shortUrl(url.getShortUrl())
+                        .build())
+
+                .collect(Collectors.toList());
+        return GetAllActiveUrlResponse.success(urlDtos);
     }
 
     public CreateUrlResponse createUrl(String username, CreateUrlRequest request) {
@@ -56,8 +79,13 @@ public class UrlService {
             return CreateUrlResponse.failed(validationError.get());
         }
 
+        String normalizeUrl = normalizeUrl(request);
+        if (!isValidateUrl(normalizeUrl)) {
+            return CreateUrlResponse.failed(CreateUrlResponse.Error.INVALID_OLD_VALID_URL);
+        }
+
         Url url = Url.builder()
-                .originalUrl(request.getOriginalUrl())
+                .originalUrl(normalizeUrl)
                 .shortUrl(generateShortUrl(request.getOriginalUrl()))
                 .dateCreated(LocalDateTime.now())
                 .visitCount(0)
@@ -96,5 +124,46 @@ public class UrlService {
         }
 
         return Optional.empty();
+    }
+
+    private boolean isValidateUrl(String inputUrl) {
+        int statusCode = getStatusCode(inputUrl);
+        return 200 <= statusCode && statusCode <= 204;
+    }
+
+    private int getStatusCode(String inputUrl) {
+        try {
+            URL urlObject = new URL(inputUrl);
+            HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
+            connection.setRequestMethod("HEAD");
+            try (InputStream ignored = connection.getInputStream()) {
+                return connection.getResponseCode();
+            }
+        } catch (IOException ignore) {
+            return -1;
+        }
+    }
+
+    private String normalizeUrl(CreateUrlRequest request) {
+        try {
+            new URL(request.getOriginalUrl());
+        } catch (MalformedURLException ignored) {
+            return URL_PREFIX + request.getOriginalUrl();
+        }
+        return request.getOriginalUrl();
+    }
+
+    public RedirectResponse redirectOriginalUrl(RedirectRequest request) {
+
+        Optional<Url> byShortUrl = urlRepository.findByShortUrl(request.getShortUrl());
+        if (byShortUrl.isEmpty()) {
+            return RedirectResponse.failed(RedirectResponse.Error.INVALID_SHORT_URL);
+        }
+
+        Url url = byShortUrl.get();
+        url.incrementVisitCount();
+        urlRepository.save(url);
+
+        return RedirectResponse.success(url.getOriginalUrl());
     }
 }
