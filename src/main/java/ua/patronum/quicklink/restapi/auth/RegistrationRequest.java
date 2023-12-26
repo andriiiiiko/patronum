@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.restapi.auth.dto.registration;
+package ua.patronum.quicklink.restapi.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

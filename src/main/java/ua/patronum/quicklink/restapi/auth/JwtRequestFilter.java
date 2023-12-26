@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.restapi.auth.dto.security;
+package ua.patronum.quicklink.restapi.auth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

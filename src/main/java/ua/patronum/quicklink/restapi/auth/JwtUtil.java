@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.restapi.auth.dto.security;
+package ua.patronum.quicklink.restapi.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
