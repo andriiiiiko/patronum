@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.restapi.auth.dto.security;
+package ua.patronum.quicklink.restapi.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

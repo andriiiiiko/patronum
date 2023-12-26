@@ -1,15 +1,9 @@
-package ua.patronum.quicklink.restapi.auth.dto;
+package ua.patronum.quicklink.restapi.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.patronum.quicklink.data.entity.User;
-import ua.patronum.quicklink.restapi.auth.dto.login.LoginRequest;
-import ua.patronum.quicklink.restapi.auth.dto.login.LoginResponse;
-import ua.patronum.quicklink.restapi.auth.dto.registration.RegistrationRequest;
-import ua.patronum.quicklink.restapi.auth.dto.registration.RegistrationResponse;
-import ua.patronum.quicklink.restapi.auth.dto.security.JwtUtil;
-import ua.patronum.quicklink.restapi.auth.dto.service.UserService;
 
 import java.util.Objects;
 import java.util.Optional;
