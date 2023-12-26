@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.swagger;
+package ua.patronum.quicklink.restapi.swagger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
