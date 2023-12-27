@@ -44,9 +44,11 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
 tasks.named('check') {
     dependsOn 'test'
 }
+
 tasks.jacocoTestReport {
     reports {
         xml.required = true
