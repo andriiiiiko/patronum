@@ -1,4 +1,3 @@
-
 name: Quick-link CI
 
 on:
@@ -29,7 +28,7 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build --exclude-task test
+      run: ./gradlew build --exclude-task test --warning-mode=all
 
     - name: Finalize Build
       run: echo "Build completed successfully!"
