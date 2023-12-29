@@ -2,9 +2,11 @@ package ua.patronum.quicklink.restapi.url;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Builder
 public class GetAllUserUrlsResponse extends Response {

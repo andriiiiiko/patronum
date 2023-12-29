@@ -95,7 +95,7 @@ public class UrlServiceImpl implements UrlService {
 
         String normalizeUrl = normalizeUrl(request);
         if (!isValidUrl(normalizeUrl)) {
-            return CreateUrlResponse.failed(Error.INVALID_OLD_VALID_URL);
+            return CreateUrlResponse.failed(Error.EXPIRED_URL);
         }
 
         Url url = Url.builder()
