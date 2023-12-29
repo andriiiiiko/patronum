@@ -7,21 +7,15 @@ import java.util.List;
 
 @Data
 @Builder
-public class GetAllUrlsResponse {
-
-    public enum Error {
-        OK,
-    }
+public class GetAllUrlsResponse extends Response {
 
     private List<UrlDto> urls;
 
-    private Error error;
-
     public static GetAllUrlsResponse success(List<UrlDto> urls) {
-        return builder().urls(urls).error(Error.OK).build();
+        return success(builder().urls(urls).build());
     }
 
     public static GetAllUrlsResponse failed(Error error) {
-        return builder().error(error).build();
+        return failed(builder().build(), error);
     }
 }

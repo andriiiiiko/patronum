@@ -5,21 +5,13 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateUrlResponse {
-
-    public enum Error {
-        OK,
-        INVALID_OLD_VALID_URL,
-        EMPTY_NEW_URL,
-    }
-
-    private Error error;
+public class CreateUrlResponse extends Response {
 
     public static CreateUrlResponse success() {
-        return builder().error(Error.OK).build();
+        return success(builder().build());
     }
 
     public static CreateUrlResponse failed(Error error) {
-        return builder().error(error).build();
+        return failed(builder().build(), error);
     }
 }

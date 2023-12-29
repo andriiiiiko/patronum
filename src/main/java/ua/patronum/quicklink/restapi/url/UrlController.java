@@ -23,12 +23,12 @@ public class UrlController {
     }
 
     @GetMapping("/view/all/user")
-    public GetAllUserUrlResponse getUserUrls(@RequestParam String username) {
+    public GetAllUserUrlsResponse getUserUrls(@RequestBody String username) {
         return urlService.getAllUserUrls(username);
     }
 
     @GetMapping("/view/all/user/active")
-    public GetAllActiveUrlResponse getAllActiveUrl(Principal principal) {
+    public GetAllUserActiveUrlsResponse getAllUserActiveUrl(Principal principal) {
         return urlService.getAllUserActiveUrl(principal.getName());
     }
 
@@ -40,5 +40,10 @@ public class UrlController {
     @PostMapping("/view/redirect")
     public RedirectResponse redirectOriginalUrl(@RequestBody RedirectRequest request) {
         return urlService.redirectOriginalUrl(request);
+    }
+
+    @GetMapping("/view/all/active")
+    public GetAllActiveUrlsResponse getAllActiveUrls() {
+        return urlService.getAllActiveUrls();
     }
 }
