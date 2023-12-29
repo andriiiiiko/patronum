@@ -65,20 +65,13 @@
     </style>
 </head>
 <body>
-
 <div class="header">
-    <!-- Title -->
     <span class="title">
         <span class="brand">Patronum.<span class="brand-highlight">ShortURL</span></span>
     </span>
-
-    <!-- Login button with redirect link -->
     <a class="btn btn-login btn-primary" th:href="@{/auth/login}">Login</a>
-
-    <!-- API button with redirect link -->
     <a class="btn btn-api btn-primary" th:href="@{/swagger/doc}">API</a>
 </div>
-
 <div class="container">
     <h2>URL List</h2>
     <table class="table">
@@ -94,7 +87,6 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Вивід інформації для кожного об'єкта Url -->
         <tr th:each="url : ${urlList}">
             <td th:text="${url.id}"></td>
             <td th:text="${url.originalUrl}"></td>
@@ -108,11 +100,9 @@
     </table>
 </div>
 </div>
-
 <div class="footer">
     @2024 ua.patronum <a href="https://github.com/andriiiiiko/quick-link">GitHub</a>
 </div>
-
 <script crossorigin="anonymous"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

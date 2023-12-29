@@ -88,7 +88,6 @@
     </style>
 </head>
 <body>
-
 <div class="header">
     <span class="title">
         <span class="brand">Patronum.<span class="brand-highlight">ShortURL</span></span>
@@ -96,7 +95,6 @@
     <a class="btn btn-login btn-primary" th:href="@{/logout}">Logout</a>
     <a class="btn btn-api btn-primary" th:href="@{/swagger/doc}">API</a>
 </div>
-
 <div class="container">
     <form action="/home/create" id="createForm" method="post">
         <div class="input-group">
@@ -125,6 +123,7 @@
                 <th>Expiration Date</th>
                 <th>Visit Count</th>
                 <th>User</th>
+                <th th:if="${isUserListPage}">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -136,15 +135,18 @@
                 <td th:text="${url.expirationDate}"></td>
                 <td th:text="${url.visitCount}"></td>
                 <td th:text="${url.user.username}"></td>
+                <td th:if="${isUserListPage}">
+                    <form method="post" action="/home/user/list/delete/${url.id}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
 </div>
-
 <div class="footer">
     @2024 ua.patronum <a href="https://github.com/andriiiiiko/quick-link">GitHub</a>
 </div>
-
 <script crossorigin="anonymous"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -186,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('input[name="showActive"]').checked = showActive;
 });
 </script>
-
 </body>
 </html>
 
