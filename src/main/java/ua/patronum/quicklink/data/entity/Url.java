@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Url {
 
+    private static final int EXPIRATION_DAYS = 30;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +38,15 @@ public class Url {
     @Column(name = "visit_count", nullable = false)
     private int visitCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public void setExpirationDate() {
+        this.expirationDate = this.dateCreated.plusDays(EXPIRATION_DAYS);
+    }
+
+    public void incrementVisitCount() {
+        this.visitCount++;
+    }
 }
