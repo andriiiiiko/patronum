@@ -1,7 +1,7 @@
 package ua.patronum.quicklink.mvc.service;
 
 import ua.patronum.quicklink.data.entity.User;
-import ua.patronum.quicklink.mvc.repository.UserRepository;
+import ua.patronum.quicklink.data.repository.UserRepository;
 
 import java.util.Optional;
 
@@ -24,10 +24,4 @@ public class UserService {
     }
 }
 
-/*
-методы для юзера
-регистрация
-логин
-лог аут
 
- */

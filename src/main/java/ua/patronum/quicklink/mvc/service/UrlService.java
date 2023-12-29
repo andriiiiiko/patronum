@@ -1,6 +1,7 @@
 package ua.patronum.quicklink.mvc.service;
 
-import ua.patronum.quicklink.mvc.repository.UrlRepository;
+import ua.patronum.quicklink.data.entity.Url;
+import ua.patronum.quicklink.data.repository.UrlRepository;
 
 public class UrlService {
 
@@ -10,13 +11,19 @@ public class UrlService {
         this.urlRepository = urlRepository;
     }
 
+    public void add(Url url) {
+        urlRepository.save(url);
+    }
+
+
+
 }
 
 /*
 методы для урла
 
 create
-edit
+
 view all
 
  */
