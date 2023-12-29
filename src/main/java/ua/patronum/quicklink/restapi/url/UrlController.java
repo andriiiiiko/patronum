@@ -34,7 +34,7 @@ public class UrlController {
 
     @PostMapping("/delete/{id}")//
     public DeleteUrlResponse deleteUrlById(Principal principal, @PathVariable Long id) {
-        return urlService.deleteUrlById(principal.getName(),id);
+        return urlService.deleteUrlById(principal.getName(), id);
     }
 
     @PostMapping("/view/redirect")
