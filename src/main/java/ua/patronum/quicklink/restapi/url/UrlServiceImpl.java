@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ua.patronum.quicklink.data.entity.Url;
 import ua.patronum.quicklink.data.entity.User;
 import ua.patronum.quicklink.data.repository.UrlRepository;
-import ua.patronum.quicklink.restapi.auth.dto.service.UserService;
+import ua.patronum.quicklink.restapi.auth.UserService;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
