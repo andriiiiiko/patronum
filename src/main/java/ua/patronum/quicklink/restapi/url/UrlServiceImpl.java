@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ua.patronum.quicklink.data.entity.Url;
 import ua.patronum.quicklink.data.entity.User;
 import ua.patronum.quicklink.data.repository.UrlRepository;
-import ua.patronum.quicklink.restapi.auth.dto.service.UserService;
+import ua.patronum.quicklink.restapi.auth.UserService;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -112,10 +112,15 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
-    public DeleteUrlResponse deleteUrlById(Long id) {
+    public DeleteUrlResponse deleteUrlById(String username, Long id) {
         Optional<Url> optionalUrl = urlRepository.findById(id);
         if (optionalUrl.isEmpty()) {
             return DeleteUrlResponse.failed(Error.INVALID_ID);
+        }
+        Url url = optionalUrl.get();
+
+        if(!url.getUser().getUsername().equals(username)){
+            return DeleteUrlResponse.failed(Error.INVALID_ACCESS);
         }
         urlRepository.deleteById(id);
         return DeleteUrlResponse.success();

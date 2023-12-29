@@ -17,24 +17,24 @@ public class UrlController {
         return urlService.createUrl(principal.getName(), request);
     }
 
-    @GetMapping("/view/all")
+    @GetMapping("/view/all")//
     public GetAllUrlsResponse getAllUrls() {
         return urlService.getAllUrls();
     }
 
-    @GetMapping("/view/all/user")
-    public GetAllUserUrlsResponse getUserUrls(@RequestBody String username) {
-        return urlService.getAllUserUrls(username);
+    @GetMapping("/view/all/user")//
+    public GetAllUserUrlsResponse getUserUrls(Principal principal) {
+        return urlService.getAllUserUrls(principal.getName());
     }
 
-    @GetMapping("/view/all/user/active")
+    @GetMapping("/view/all/user/active")//
     public GetAllUserActiveUrlsResponse getAllUserActiveUrl(Principal principal) {
         return urlService.getAllUserActiveUrl(principal.getName());
     }
 
-    @PostMapping("/delete/{id}")
-    public DeleteUrlResponse deleteUrlById(@PathVariable Long id) {
-        return urlService.deleteUrlById(id);
+    @PostMapping("/delete/{id}")//
+    public DeleteUrlResponse deleteUrlById(Principal principal, @PathVariable Long id) {
+        return urlService.deleteUrlById(principal.getName(),id);
     }
 
     @PostMapping("/view/redirect")
