@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +31,8 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public GetAllUrlsResponse getAllUrls() {
         List<Url> allUrls = urlRepository.findAll();
-        List<UrlDto> urlDtos = allUrls.stream()
+        List<UrlDto> urlDtos = allUrls
+                .stream()
                 .map(url -> UrlDto.builder()
                         .id(url.getId())
                         .originalUrl(url.getOriginalUrl())
@@ -41,8 +41,7 @@ public class UrlServiceImpl implements UrlService {
                         .expirationDate(url.getExpirationDate())
                         .visitCount(url.getVisitCount())
                         .build())
-                .collect(Collectors.toList());
-
+                .toList();
         return GetAllUrlsResponse.success(urlDtos);
     }
 
@@ -59,7 +58,7 @@ public class UrlServiceImpl implements UrlService {
                         .expirationDate(url.getExpirationDate())
                         .visitCount(url.getVisitCount())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
         return GetAllUserUrlsResponse.success(urlDtos);
     }
 
@@ -79,7 +78,7 @@ public class UrlServiceImpl implements UrlService {
                         .visitCount(url.getVisitCount())
                         .build())
 
-                .collect(Collectors.toList());
+                .toList();
         return GetAllUserActiveUrlsResponse.success(urlDtos);
     }
 
@@ -188,7 +187,7 @@ public class UrlServiceImpl implements UrlService {
                         .visitCount(url.getVisitCount())
                         .build())
 
-                .collect(Collectors.toList());
+                .toList();
         return GetAllActiveUrlsResponse.success(urlDtos);
     }
 }
