@@ -92,7 +92,9 @@
     <span class="title">
         <span class="brand">Patronum.<span class="brand-highlight">ShortURL</span></span>
     </span>
-    <a class="btn btn-login btn-primary" th:href="@{/logout}">Logout</a>
+    <form action="/auth/logout" method="post">
+        <button class="btn btn-login btn-primary" type="submit">Logout</button>
+    </form>
     <a class="btn btn-api btn-primary" th:href="@{/swagger/doc}">API</a>
 </div>
 <div class="container">
@@ -136,7 +138,7 @@
                 <td th:text="${url.visitCount}"></td>
                 <td th:text="${url.user.username}"></td>
                 <td th:if="${isUserListPage}">
-                    <form method="post" action="/home/user/list/delete/${url.id}">
+                    <form action="/home/user/list/delete/${url.id}" method="post">
                         <button type="submit">Delete</button>
                     </form>
                 </td>

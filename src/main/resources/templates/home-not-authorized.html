@@ -74,6 +74,13 @@
 </div>
 <div class="container">
     <h2>URL List</h2>
+    <form id="filterForm">
+        <div class="checkbox-group">
+            <label><input name="showActive" type="checkbox"> Show Active</label>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitForm()" type="button">Apply Filter</button>
+    </form>
     <table class="table">
         <thead>
         <tr>
@@ -110,5 +117,32 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy6pHaWE5wE1a6PVI9bhv7pBBaP6HUP"
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function storeFilterState() {
+    var showActive = document.querySelector('input[name="showActive"]').checked;
+
+    sessionStorage.setItem('showActive', showActive);
+}
+
+function submitForm() {
+    storeFilterState();
+
+    var showActive = sessionStorage.getItem('showActive') === 'true';
+
+    if (showActive) {
+        window.location.href = '/home/active';
+    } else {
+        window.location.href = '/home';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var showMy = sessionStorage.getItem('showMy') === 'true';
+    var showActive = sessionStorage.getItem('showActive') === 'true';
+
+    document.querySelector('input[name="showMy"]').checked = showMy;
+    document.querySelector('input[name="showActive"]').checked = showActive;
+});
+</script>
 </body>
 </html>
