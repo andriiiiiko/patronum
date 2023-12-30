@@ -38,21 +38,16 @@ jobs:
       - name: Finalize Build
         run: echo "Build completed successfully!"
 
-      - name: Check Environment Variables
+      - name: Check Secret Lengths
         run: |
-          if [[ -z "$SPRING_DATASOURCE_URL" ]]; then
-            echo "SPRING_DATASOURCE_URL is not set."
-            exit 1
-          fi
-          if [[ -z "$SPRING_DATASOURCE_USERNAME" ]]; then
-            echo "SPRING_DATASOURCE_USERNAME is not set."
-            exit 1
-          fi
-          if [[ -z "$SPRING_DATASOURCE_PASSWORD" ]]; then
-            echo "SPRING_DATASOURCE_PASSWORD is not set."
-            exit 1
-          fi
-          echo "All required environment variables are set."  
+          echo "Length of SPRING_DATASOURCE_URL is ${#SPRING_DATASOURCE_URL}"
+          echo "Length of SPRING_DATASOURCE_USERNAME is ${#SPRING_DATASOURCE_USERNAME}"
+          echo "Length of SPRING_DATASOURCE_PASSWORD is ${#SPRING_DATASOURCE_PASSWORD}"
+          shell: bash
+          env:
+          SPRING_DATASOURCE_URL: ${{ secrets.DB_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }} 
 
   test:
     needs: build
