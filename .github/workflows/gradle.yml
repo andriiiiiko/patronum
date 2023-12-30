@@ -11,11 +11,6 @@ on:
 permissions:
   contents: read
 
-env:
-  SPRING_DATASOURCE_URL: ${{ secrets.DB_URL }}
-  SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USERNAME }}
-  SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -56,6 +51,10 @@ jobs:
 
       - name: Run Tests with Gradle
         run: ./gradlew test jacocoTestReport
+        env:
+          SPRING_DATASOURCE_URL: ${{ secrets.DB_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Finalize Test
         run: echo "Tests completed successfully!"
