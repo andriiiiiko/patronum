@@ -38,12 +38,6 @@ jobs:
       - name: Finalize Build
         run: echo "Build completed successfully!"
 
-      - name: Check Secret Lengths
-        run: |
-          echo "Length of DB_URL is ${#DB_URL}"
-          echo "Length of DB_USERNAME is ${#DB_USERNAME}"
-          echo "Length of DB_PASSWORD is ${#DB_PASSWORD}"
-
   test:
     needs: build
     runs-on: ubuntu-20.04
