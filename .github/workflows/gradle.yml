@@ -56,6 +56,9 @@ jobs:
 
       - name: Run Tests with Gradle
         run: ./gradlew test jacocoTestReport
+          -Dspring.datasource.url=${{ secrets.DB_URL }}
+          -Dspring.datasource.username=${{ secrets.DB_USERNAME }}
+          -Dspring.datasource.password=${{ secrets.DB_PASSWORD }}
 
       - name: Finalize Test
         run: echo "Tests completed successfully!"
