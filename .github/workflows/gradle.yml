@@ -75,4 +75,3 @@ jobs:
           fi
       - name: Finalize Test Coverage
         run: echo "Test coverage over 80%!"
-
