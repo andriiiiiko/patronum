@@ -55,10 +55,11 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run Tests with Gradle
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: ./gradlew test jacocoTestReport
-          -Dspring.datasource.url=${{ secrets.DB_URL }}
-          -Dspring.datasource.username=${{ secrets.DB_USERNAME }}
-          -Dspring.datasource.password=${{ secrets.DB_PASSWORD }}
 
       - name: Finalize Test
         run: echo "Tests completed successfully!"
