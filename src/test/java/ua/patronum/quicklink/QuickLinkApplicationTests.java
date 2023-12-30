@@ -9,4 +9,5 @@ class QuickLinkApplicationTests {
     @Test
     void contextLoads() {
     }
+
 }
