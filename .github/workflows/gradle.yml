@@ -55,10 +55,6 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run Tests with Gradle
-        env:
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: ./gradlew test jacocoTestReport
 
       - name: Finalize Test
