@@ -12,9 +12,9 @@ permissions:
   contents: read
 
 env:
-  SPRING_DATASOURCE_URL: ${{ secrets.DB_URL }}
-  SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USERNAME }}
-  SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_URL: ${{ secrets.DB_URL }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
   build:
@@ -40,14 +40,9 @@ jobs:
 
       - name: Check Secret Lengths
         run: |
-          echo "Length of SPRING_DATASOURCE_URL is ${#SPRING_DATASOURCE_URL}"
-          echo "Length of SPRING_DATASOURCE_USERNAME is ${#SPRING_DATASOURCE_USERNAME}"
-          echo "Length of SPRING_DATASOURCE_PASSWORD is ${#SPRING_DATASOURCE_PASSWORD}"
-          shell: bash
-          env:
-          SPRING_DATASOURCE_URL: ${{ secrets.DB_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }} 
+          echo "Length of DB_URL is ${#DB_URL}"
+          echo "Length of DB_USERNAME is ${#DB_USERNAME}"
+          echo "Length of DB_PASSWORD is ${#DB_PASSWORD}"
 
   test:
     needs: build
