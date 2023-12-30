@@ -8,6 +8,7 @@ class QuickLinkApplicationTests {
 
     @Test
     void contextLoads() {
+        QuickLinkApplication.main(new String[] {});
     }
 
 }
