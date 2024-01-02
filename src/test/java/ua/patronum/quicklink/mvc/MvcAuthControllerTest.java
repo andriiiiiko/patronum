@@ -1,4 +1,4 @@
-package quicklink.mvc;
+package ua.patronum.quicklink.mvc;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
