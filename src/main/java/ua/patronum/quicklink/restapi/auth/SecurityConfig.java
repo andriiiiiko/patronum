@@ -25,6 +25,7 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private static final String BASE_MVS_URL = "/home";
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,6 +38,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> corsConfigurationSource())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(BASE_MVS_URL, "/auth/**", "/home/active").permitAll()
                         .requestMatchers("/swagger/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
@@ -46,8 +48,17 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .defaultSuccessUrl(BASE_MVS_URL)
+                        .failureUrl("/auth/login?error=true")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/auth/logout")
+                        .logoutSuccessUrl(BASE_MVS_URL)
+                        .permitAll())
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 )
                 .addFilterBefore(
                         new JwtRequestFilter(authenticationManager(), userDetailsService, jwtUtil),

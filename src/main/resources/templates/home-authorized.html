@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Patronum.ShortURL</title>
+    <link href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .header {
+            background-color: #007bff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            color: #ffffff;
+            font-size: 24px;
+            margin-right: auto;
+        }
+
+        .brand {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .brand-highlight {
+            color: #0056b3;
+        }
+
+        .btn-login, .btn-api {
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background-color: #ffffff;
+            color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+
+        .footer {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .create-btn {
+            margin-left: 10px;
+        }
+
+        .radio-group {
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <span class="title">
+        <span class="brand">Patronum.<span class="brand-highlight">ShortURL</span></span>
+    </span>
+    <form action="/auth/logout" method="post">
+        <button class="btn btn-login btn-primary" type="submit">Logout</button>
+    </form>
+    <a class="btn btn-api btn-primary" th:href="@{/swagger/doc}">API</a>
+</div>
+<div class="container">
+    <form action="/home/create" id="createForm" method="post">
+        <div class="input-group">
+            <input class="form-control" id="inputUrl" name="originalUrl" placeholder="Enter URL" type="text">
+            <div class="input-group-append">
+                <button class="btn btn-primary create-btn" type="submit">Create</button>
+            </div>
+        </div>
+
+        <h2>URL List</h2>
+        <form id="filterForm">
+            <div class="checkbox-group">
+                <label><input name="showMy" type="checkbox"> Show My</label>
+                <label><input name="showActive" type="checkbox"> Show Active</label>
+            </div>
+
+            <button class="btn btn-primary" onclick="submitForm()" type="button">Apply Filter</button>
+        </form>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Original URL</th>
+                <th>Short URL</th>
+                <th>Date Created</th>
+                <th>Expiration Date</th>
+                <th>Visit Count</th>
+                <th>User</th>
+                <th th:if="${isUserListPage}">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="url : ${urlList}">
+                <td th:text="${url.id}"></td>
+                <td th:text="${url.originalUrl}"></td>
+                <td th:text="${url.shortUrl}"></td>
+                <td th:text="${url.dateCreated}"></td>
+                <td th:text="${url.expirationDate}"></td>
+                <td th:text="${url.visitCount}"></td>
+                <td th:text="${url.user.username}"></td>
+                <td th:if="${isUserListPage}">
+                    <form action="/home/user/list/delete/${url.id}" method="post">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+<div class="footer">
+    @2024 ua.patronum <a href="https://github.com/andriiiiiko/quick-link">GitHub</a>
+</div>
+<script crossorigin="anonymous"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy6pHaWE5wE1a6PVI9bhv7pBBaP6HUP"
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function storeFilterState() {
+    var showMy = document.querySelector('input[name="showMy"]').checked;
+    var showActive = document.querySelector('input[name="showActive"]').checked;
+
+    sessionStorage.setItem('showMy', showMy);
+    sessionStorage.setItem('showActive', showActive);
+}
+
+function submitForm() {
+    storeFilterState();
+
+    var showMy = sessionStorage.getItem('showMy') === 'true';
+    var showActive = sessionStorage.getItem('showActive') === 'true';
+
+    if (showMy && showActive) {
+        window.location.href = '/home/user/list/active';
+    } else if (showMy) {
+        window.location.href = '/home/user/list';
+    } else if (showActive) {
+        window.location.href = '/home/active';
+    } else {
+        window.location.href = '/home';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var showMy = sessionStorage.getItem('showMy') === 'true';
+    var showActive = sessionStorage.getItem('showActive') === 'true';
+
+    document.querySelector('input[name="showMy"]').checked = showMy;
+    document.querySelector('input[name="showActive"]').checked = showActive;
+});
+</script>
+</body>
+</html>
+
+
+
