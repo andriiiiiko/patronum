@@ -1,7 +1,6 @@
 package ua.patronum.quicklink.mvc;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ import ua.patronum.quicklink.restapi.auth.RegistrationResponse;
 public class MvcAuthController {
 
     private final AuthService service;
-    private final AuthenticationManager authenticationManager;
 
     @GetMapping("/register")
     public String showRegistrationPage() {

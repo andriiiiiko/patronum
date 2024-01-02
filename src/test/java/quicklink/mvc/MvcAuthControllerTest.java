@@ -1,67 +1,72 @@
 package quicklink.mvc;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.SpringBootMockMvcBuilderCustomizer;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import ua.patronum.quicklink.QuickLinkApplication;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.ui.Model;
+import ua.patronum.quicklink.mvc.MvcAuthController;
+import ua.patronum.quicklink.restapi.auth.AuthService;
 import ua.patronum.quicklink.restapi.auth.RegistrationRequest;
+import ua.patronum.quicklink.restapi.auth.RegistrationResponse;
 
-@SpringBootTest(classes = QuickLinkApplication.class)
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
 class MvcAuthControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @Mock
+    private AuthService authService;
 
-    @Test
-     void testShowRegistrationPage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/auth/register"))
-               .andExpect(MockMvcResultMatchers.status().isOk())
-               .andExpect(MockMvcResultMatchers.view().name("registration"));
+    @Mock
+    private Model model;
+
+    @InjectMocks
+    private MvcAuthController authController;
+
+    public MvcAuthControllerTest() {
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void testSuccessfulRegistration() throws Exception {
-        // Given
+    void testShowRegistrationPage() {
+        String result = authController.showRegistrationPage();
+        assertEquals("registration", result);
+    }
+
+    @Test
+    void testRegisterSuccess() {
         RegistrationRequest registrationRequest = new RegistrationRequest
-                ("testUser","testPassword","testPassword");
+                ("test","Test111","Test111");
+        RegistrationResponse successResponse =RegistrationResponse.success();
+        when(authService.register(registrationRequest)).thenReturn(successResponse);
 
-        // When & Then
-        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
-               .flashAttr("registrationRequest", registrationRequest))
-               .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+        String result = authController.register(registrationRequest, model);
+
+        assertEquals("redirect:/auth/login", result);
+        verify(authService, times(1)).register(registrationRequest);
+        verifyNoMoreInteractions(authService);
     }
 
     @Test
-    void testFailedRegistration() throws Exception {
-        // Given
+    void testRegisterError() {
         RegistrationRequest registrationRequest = new RegistrationRequest
-                ("testUser","testPassword","testPassword");
+                ("test","test111","test111");
 
-        // When & Then
-        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
-               .flashAttr("registrationRequest", registrationRequest))
-               .andExpect(MockMvcResultMatchers.status().isOk())
-               .andExpect(MockMvcResultMatchers.view().name("registration"))
-               .andExpect(MockMvcResultMatchers.model().attributeExists("error"));
+        RegistrationResponse errorResponse = RegistrationResponse.failed(RegistrationResponse.Error.INVALID_PASSWORD);
+        when(authService.register(registrationRequest)).thenReturn(errorResponse);
+
+        String result = authController.register(registrationRequest, model);
+
+        assertEquals("registration", result);
+        verify(authService, times(1)).register(registrationRequest);
+        verify(model, times(1)).addAttribute(eq("error"), eq("INVALID_PASSWORD"));
+        verifyNoMoreInteractions(authService, model);
     }
 
     @Test
-    void testShowLoginPage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/auth/login"))
-               .andExpect(MockMvcResultMatchers.status().isOk())
-               .andExpect(MockMvcResultMatchers.view().name("login"));
+    void testShowLoginPage() {
+        String result = authController.showLoginPage();
+        assertEquals("login", result);
     }
 }
