@@ -40,6 +40,7 @@ public class UrlServiceImpl implements UrlService {
                         .dateCreated(url.getDateCreated())
                         .expirationDate(url.getExpirationDate())
                         .visitCount(url.getVisitCount())
+                        .username(url.getUser().getUsername())
                         .build())
                 .toList();
         return GetAllUrlsResponse.success(urlDtos);
@@ -57,6 +58,7 @@ public class UrlServiceImpl implements UrlService {
                         .dateCreated(url.getDateCreated())
                         .expirationDate(url.getExpirationDate())
                         .visitCount(url.getVisitCount())
+                        .username(url.getUser().getUsername())
                         .build())
                 .toList();
         return GetAllUserUrlsResponse.success(urlDtos);
@@ -76,6 +78,7 @@ public class UrlServiceImpl implements UrlService {
                         .dateCreated(url.getDateCreated())
                         .expirationDate(url.getExpirationDate())
                         .visitCount(url.getVisitCount())
+                        .username(url.getUser().getUsername())
                         .build())
 
                 .toList();
@@ -185,6 +188,7 @@ public class UrlServiceImpl implements UrlService {
                         .dateCreated(url.getDateCreated())
                         .expirationDate(url.getExpirationDate())
                         .visitCount(url.getVisitCount())
+                        .username(url.getUser().getUsername())
                         .build())
 
                 .toList();

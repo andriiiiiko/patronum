@@ -12,6 +12,7 @@
 
         .container {
             margin-top: 50px;
+            margin-left: 50px;
         }
 
         .header {
@@ -62,6 +63,37 @@
             bottom: 0;
             width: 100%;
         }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .create-btn {
+            margin-left: 10px;
+        }
+
+        .radio-group {
+            margin-top: 10px;
+        }
+              .short-url {
+        color: #007bff;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .short-url:hover {
+        color: #0056b3;
+    }
+
+       table {
+            width: 100%;
+            margin-top: 20px;
+        }
+         th, td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -96,12 +128,17 @@
         <tbody>
         <tr th:each="url : ${urlList}">
             <td th:text="${url.id}"></td>
-            <td th:text="${url.originalUrl}"></td>
-            <td th:text="${url.shortUrl}"></td>
+            <td>
+                <a target="_blank" th:href="${url.originalUrl}" th:text="${url.originalUrl}"></a>
+            </td>
+            <td>
+                <span class="short-url" onclick="redirectToUrl(this)" th:attr="data-url-id=${url.id}"
+                      th:text="${url.shortUrl}"></span>
+            </td>
             <td th:text="${url.dateCreated}"></td>
             <td th:text="${url.expirationDate}"></td>
             <td th:text="${url.visitCount}"></td>
-            <td th:text="${url.user.username}"></td>
+            <td th:text="${url.username}"></td>
         </tr>
         </tbody>
     </table>
@@ -117,6 +154,7 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy6pHaWE5wE1a6PVI9bhv7pBBaP6HUP"
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     function storeFilterState() {
     var showActive = document.querySelector('input[name="showActive"]').checked;
@@ -143,6 +181,18 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('input[name="showMy"]').checked = showMy;
     document.querySelector('input[name="showActive"]').checked = showActive;
 });
+</script>
+<script>
+    function redirectToUrl(element) {
+        var urlId = $(element).attr("data-url-id");
+
+        var form = $('<form>', {
+            'action': '/home/redirect/' + urlId,
+            'method': 'post'
+        });
+
+        form.appendTo('body').submit().remove();
+    }
 </script>
 </body>
 </html>

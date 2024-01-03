@@ -15,4 +15,5 @@ public class UrlDto {
     private LocalDateTime dateCreated;
     private LocalDateTime expirationDate;
     private int visitCount;
+    private String username;
 }

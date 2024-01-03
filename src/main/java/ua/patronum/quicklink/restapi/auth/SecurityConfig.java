@@ -22,10 +22,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String BASE_MVS_URL = "/home";
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
-    private static final String BASE_MVS_URL = "/home";
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -38,7 +38,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> corsConfigurationSource())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(BASE_MVS_URL, "/auth/**", "/home/active").permitAll()
+                        .requestMatchers(BASE_MVS_URL,
+                                "/auth/**",
+                                "/home/active",
+                                "/home/redirect/**")
+                        .permitAll()
                         .requestMatchers("/swagger/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",

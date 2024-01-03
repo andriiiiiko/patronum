@@ -73,8 +73,7 @@ public class AuthService {
         }
 
         if (Objects.isNull(request.getPassword())
-            || (!isValidPassword(request.getPassword())))
-        {
+                || (!isValidPassword(request.getPassword()))) {
             return Optional.of(RegistrationResponse.Error.INVALID_PASSWORD);
         }
 

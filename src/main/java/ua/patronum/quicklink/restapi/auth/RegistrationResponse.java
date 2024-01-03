@@ -7,14 +7,6 @@ import lombok.Data;
 @Data
 public class RegistrationResponse {
 
-    public enum Error {
-        OK,
-        USER_ALREADY_EXISTS,
-        INVALID_USERNAME,
-        INVALID_PASSWORD,
-        INVALID_CONFIRM_PASSWORD
-    }
-
     private Error error;
 
     public static RegistrationResponse success() {
@@ -23,5 +15,13 @@ public class RegistrationResponse {
 
     public static RegistrationResponse failed(Error error) {
         return builder().error(error).build();
+    }
+
+    public enum Error {
+        OK,
+        USER_ALREADY_EXISTS,
+        INVALID_USERNAME,
+        INVALID_PASSWORD,
+        INVALID_CONFIRM_PASSWORD;
     }
 }

@@ -12,6 +12,7 @@
 
         .container {
             margin-top: 50px;
+            margin-left: 50px;
         }
 
         .header {
@@ -74,13 +75,21 @@
         .radio-group {
             margin-top: 10px;
         }
+              .short-url {
+        color: #007bff;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
 
-        table {
+    .short-url:hover {
+        color: #0056b3;
+    }
+
+       table {
             width: 100%;
             margin-top: 20px;
         }
-
-        th, td {
+         th, td {
             border: 1px solid #dee2e6;
             padding: 8px;
             text-align: left;
@@ -97,7 +106,7 @@
     </form>
     <a class="btn btn-api btn-primary" th:href="@{/swagger/doc}">API</a>
 </div>
-<div class="container">
+<div class="container center-container">
     <form action="/home/create" id="createForm" method="post">
         <div class="input-group">
             <input class="form-control" id="inputUrl" name="originalUrl" placeholder="Enter URL" type="text">
@@ -131,14 +140,19 @@
             <tbody>
             <tr th:each="url : ${urlList}">
                 <td th:text="${url.id}"></td>
-                <td th:text="${url.originalUrl}"></td>
-                <td th:text="${url.shortUrl}"></td>
+                <td>
+                    <a target="_blank" th:href="${url.originalUrl}" th:text="${url.originalUrl}"></a>
+                </td>
+                <td>
+                    <span class="short-url" onclick="redirectToUrl(this)" th:attr="data-url-id=${url.id}"
+                          th:text="${url.shortUrl}"></span>
+                </td>
                 <td th:text="${url.dateCreated}"></td>
                 <td th:text="${url.expirationDate}"></td>
                 <td th:text="${url.visitCount}"></td>
-                <td th:text="${url.user.username}"></td>
+                <td th:text="${url.username}"></td>
                 <td th:if="${isUserListPage}">
-                    <form action="/home/user/list/delete/${url.id}" method="post">
+                    <form method="post" th:action="@{/home/user/list/delete/{id}(id=${url.id})}">
                         <button type="submit">Delete</button>
                     </form>
                 </td>
@@ -146,6 +160,7 @@
             </tbody>
         </table>
 </div>
+
 <div class="footer">
     @2024 ua.patronum <a href="https://github.com/andriiiiiko/quick-link">GitHub</a>
 </div>
@@ -189,6 +204,18 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('input[name="showMy"]').checked = showMy;
     document.querySelector('input[name="showActive"]').checked = showActive;
 });
+</script>
+<script>
+    function redirectToUrl(element) {
+        var urlId = $(element).attr("data-url-id");
+
+        var form = $('<form>', {
+            'action': '/home/redirect/' + urlId,
+            'method': 'post'
+        });
+
+        form.appendTo('body').submit().remove();
+    }
 </script>
 </body>
 </html>
