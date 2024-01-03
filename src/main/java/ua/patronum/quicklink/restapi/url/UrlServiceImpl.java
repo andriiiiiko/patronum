@@ -190,4 +190,21 @@ public class UrlServiceImpl implements UrlService {
                 .toList();
         return GetAllActiveUrlsResponse.success(urlDtos);
     }
+
+    @Override
+    public EditUrlResponse editUrl(String username, Long id, EditUrlRequest request) {
+        Optional<Url> optionalUrl = urlRepository.findById(id);
+        if (optionalUrl.isEmpty()) {
+            return EditUrlResponse.failed(Error.INVALID_ID);
+        }
+        Url url = optionalUrl.get();
+
+        if (!url.getUser().getUsername().equals(username)) {
+            return EditUrlResponse.failed(Error.INVALID_ACCESS);
+        }
+
+        url.setContent(request.getContent());
+        urlRepository.save(url);
+        return EditUrlResponse.success();
+    }
 }

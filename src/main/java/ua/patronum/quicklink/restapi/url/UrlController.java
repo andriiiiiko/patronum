@@ -44,6 +44,11 @@ public class UrlController {
         return urlService.getAllUserActiveUrl(principal.getName());
     }
 
+    @PostMapping("/edit/{id}")
+    public EditUrlResponse editUrl (Principal principal, @PathVariable Long id, @RequestBody EditUrlRequest request){
+        return urlService.editUrl(principal.getName(), id, request);
+    }
+
     @PostMapping("/delete/{id}")//
     @Operation(summary = "Delete ShortURL by ID",
             description = "Endpoint to delete ShortURL by ID")

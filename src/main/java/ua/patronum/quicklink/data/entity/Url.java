@@ -38,6 +38,9 @@ public class Url {
     @Column(name = "visit_count", nullable = false)
     private int visitCount;
 
+    @Column(name = "content")
+    private String content;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
