@@ -11,10 +11,10 @@ import java.util.List;
 @Builder
 public class GetAllActiveUrlsResponse extends Response {
 
-    private List<UrlDto> activeUrls;
+    private List<UrlDto> urls;
 
     public static GetAllActiveUrlsResponse success(List<UrlDto> urls) {
-        return success(builder().activeUrls(urls).build());
+        return success(builder().urls(urls).build());
     }
 
     public static GetAllActiveUrlsResponse failed(Error error) {
