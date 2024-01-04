@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 "/auth/**",
                                 "/home/active",
                                 "/home/redirect/**",
+                                "/",
                                 "/api/v1/auth/**",
                                 "/api/v1/urls/view/all",
                                 "/api/v1/urls/view/redirect",
