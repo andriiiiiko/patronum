@@ -128,6 +128,29 @@ const UserView = () => {
         }
     };
 
+    const handleTime = async (shortUrl) => {
+        try {
+            const authToken = localStorage.getItem('authToken');
+            const headers = { Authorization: `Bearer ${authToken}` };
+
+            const response =  await axios.post('http://localhost:80/api/v1/extension', { shortUrl });
+
+            const { error } = response.data;
+
+            if (error === 'OK') {
+                // Обработка успешного удаления ссылки, если необходимо
+                console.log('URL deleted successfully');
+                // После удаления обновите данные, вызвав fetchData()
+                fetchData();
+            } else {
+                setError('Error deleting URL');
+            }
+        } catch (error) {
+            console.error('Unexpected error while deleting URL', error);
+            setError('Unexpected error while deleting URL');
+        }
+    };
+
     console.log('data', data)
     const isAuthToken = localStorage.getItem('authToken')
     return (
@@ -203,8 +226,9 @@ const UserView = () => {
                                 <div className='info-text'>
                                     <span><a href={item.expirationDate}>{formatExpirationDate(item.expirationDate)}</a></span>
                                 </div>
-                                <button type='button' className='button'>+ 30 day</button>
-                                {/* сюда кнопкам надо певесить обработчик по onClick */}
+                                <button type='button' onClick={() => handleTime(item.shortUrl)} className='button'>
+                                    +30 Day
+                                </button>
                                 <button type='button' onClick={() => handleDelete(item.id)} className='button'>
                                     delete
                                 </button>
@@ -214,7 +238,7 @@ const UserView = () => {
                 </>
                 :
                 <>
-                {/*<div className='Info-title Form-label'>*/}
+                    {/*<div className='Info-title Form-label'>*/}
                 {/*        <p>ShortUrl</p>*/}
                 {/*        <p>OriginalUrl</p>*/}
                 {/*</div>*/}
