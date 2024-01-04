@@ -22,7 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private static final String BASE_MVS_URL = "/home";
+    private static final String BASE_MVS_URL = "/mvc/home";
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
@@ -39,9 +39,9 @@ public class SecurityConfig {
                 .cors(c -> corsConfigurationSource())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(BASE_MVS_URL,
-                                "/auth/**",
-                                "/home/active",
-                                "/home/redirect/**",
+                                "/mvc/auth/**",
+                                "/mvc/home/active",
+                                "/mvc/home/redirect/**",
                                 "/",
                                 "/api/v1/auth/**",
                                 "/api/v1/urls/view/all",
@@ -54,12 +54,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/auth/login")
+                        .loginPage("/mvc/auth/login")
                         .defaultSuccessUrl(BASE_MVS_URL)
-                        .failureUrl("/auth/login?error=true")
+                        .failureUrl("/mvc/auth/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
+                        .logoutUrl("/mvc/auth/logout")
                         .logoutSuccessUrl(BASE_MVS_URL)
                         .permitAll())
                 .sessionManagement(session -> session

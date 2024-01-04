@@ -11,7 +11,7 @@ import ua.patronum.quicklink.restapi.url.CreateUrlRequest;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/mvc/home")
 public class MvcHomeController {
 
     private final MvcHomeService service;

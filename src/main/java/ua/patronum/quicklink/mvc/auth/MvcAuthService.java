@@ -20,7 +20,7 @@ public class MvcAuthService {
 
         switch (response.getError()) {
             case OK:
-                return "redirect:/auth/login";
+                return "redirect:/mvc/auth/login";
 
             case USER_ALREADY_EXISTS:
                 model.addAttribute(BASE_ATTRIBUTE, RegistrationError.USER_ALREADY_EXISTS.getErrorMessage());

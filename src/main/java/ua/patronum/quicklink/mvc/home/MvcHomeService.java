@@ -76,21 +76,21 @@ public class MvcHomeService {
             return BASE_TEMPLATE;
         }
 
-        return "redirect:/home";
+        return "redirect:/mvc/home";
     }
 
     public String delete(Long id) {
         String username = getUsername();
         service.deleteUrlById(username, id);
 
-        return "redirect:/home/user/list";
+        return "redirect:/mvc/home/user/list";
     }
 
     public String redirect(Long id) {
         Optional<Url> byId = repository.findById(id);
 
         if (byId.isEmpty()) {
-            return "redirect:/home";
+            return "redirect:/mvc/home";
         }
 
         Url url = byId.get();

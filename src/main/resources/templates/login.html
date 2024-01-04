@@ -61,7 +61,7 @@
 <body>
 <div class="container">
     <h2 class="mb-4">Login</h2>
-    <form method="post" th:action="@{/auth/login}">
+    <form method="post" th:action="@{/mvc/auth/login}">
         <div class="alert alert-danger text-center" role="alert" th:if="${param.error}">
             <p>Invalid Username or Password</p>
         </div>
@@ -74,7 +74,7 @@
             <input class="form-control" id="password" name="password" required type="password">
         </div>
         <button class="btn btn-primary btn-block" type="submit">Login</button>
-        <a class="btn btn-register btn-block" th:href="@{/auth/register}">Register</a>
+        <a class="btn btn-register btn-block" th:href="@{/mvc/auth/register}">Register</a>
     </form>
 </div>
 <script crossorigin="anonymous"

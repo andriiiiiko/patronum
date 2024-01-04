@@ -11,7 +11,7 @@ import ua.patronum.quicklink.restapi.auth.RegistrationRequest;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/mvc/auth")
 public class MvcAuthController {
 
     private final MvcAuthService service;

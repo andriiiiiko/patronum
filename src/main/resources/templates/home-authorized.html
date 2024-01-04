@@ -101,13 +101,13 @@
     <span class="title">
         <span class="brand">Patronum.<span class="brand-highlight">ShortURL</span></span>
     </span>
-    <form action="/auth/logout" method="post">
+    <form action="/mvc/auth/logout" method="post">
         <button class="btn btn-login btn-primary" type="submit">Logout</button>
     </form>
     <a class="btn btn-api btn-primary" th:href="@{/swagger/doc}">API</a>
 </div>
 <div class="container center-container">
-    <form action="/home/create" id="createForm" method="post">
+    <form action="/mvc/home/create" id="createForm" method="post">
         <div class="input-group">
             <input class="form-control" id="inputUrl" name="originalUrl" placeholder="Enter URL" type="text">
             <div class="input-group-append">
@@ -152,7 +152,7 @@
                 <td th:text="${url.visitCount}"></td>
                 <td th:text="${url.username}"></td>
                 <td th:if="${isUserListPage}">
-                    <form method="post" th:action="@{/home/user/list/delete/{id}(id=${url.id})}">
+                    <form method="post" th:action="@{/mvc/home/user/list/delete/{id}(id=${url.id})}">
                         <button type="submit">Delete</button>
                     </form>
                 </td>
@@ -187,13 +187,13 @@ function submitForm() {
     var showActive = sessionStorage.getItem('showActive') === 'true';
 
     if (showMy && showActive) {
-        window.location.href = '/home/user/list/active';
+        window.location.href = '/mvc/home/user/list/active';
     } else if (showMy) {
-        window.location.href = '/home/user/list';
+        window.location.href = '/mvc/home/user/list';
     } else if (showActive) {
-        window.location.href = '/home/active';
+        window.location.href = '/mvc/home/active';
     } else {
-        window.location.href = '/home';
+        window.location.href = '/mvc/home';
     }
 }
 
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var urlId = $(element).attr("data-url-id");
 
         var form = $('<form>', {
-            'action': '/home/redirect/' + urlId,
+            'action': '/mvc/home/redirect/' + urlId,
             'method': 'post'
         });
 

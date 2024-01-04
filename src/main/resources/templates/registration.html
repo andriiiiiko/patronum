@@ -51,8 +51,7 @@
 <body>
 <div class="container">
     <h2 class="mb-4">Registration</h2>
-    <form method="post" th:action="@{/auth/register}">
-        <!-- Display error message if it exists -->
+    <form method="post" th:action="@{/mvc/auth/register}">
         <div class="alert alert-danger" role="alert" th:if="${error}">
             <p th:text="${error}"></p>
         </div>

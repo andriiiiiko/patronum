@@ -101,7 +101,7 @@
     <span class="title">
         <span class="brand">Patronum.<span class="brand-highlight">ShortURL</span></span>
     </span>
-    <a class="btn btn-login btn-primary" th:href="@{/auth/login}">Login</a>
+    <a class="btn btn-login btn-primary" th:href="@{/mvc/auth/login}">Login</a>
     <a class="btn btn-api btn-primary" th:href="@{/swagger/doc}">API</a>
 </div>
 <div class="container">
@@ -168,9 +168,9 @@ function submitForm() {
     var showActive = sessionStorage.getItem('showActive') === 'true';
 
     if (showActive) {
-        window.location.href = '/home/active';
+        window.location.href = '/mvc/home/active';
     } else {
-        window.location.href = '/home';
+        window.location.href = '/mvc/home';
     }
 }
 
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var urlId = $(element).attr("data-url-id");
 
         var form = $('<form>', {
-            'action': '/home/redirect/' + urlId,
+            'action': '/mvc/home/redirect/' + urlId,
             'method': 'post'
         });
 
