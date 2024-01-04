@@ -37,7 +37,7 @@ public class MvcHomeService {
 
     public String showAllActiveUrl(Model model) {
         String username = getUsername();
-        List<UrlDto> activeUrls = service.getAllActiveUrls().getActiveUrls();
+        List<UrlDto> activeUrls = service.getAllActiveUrls().getUrls();
         model.addAttribute(BASE_ATTRIBUTE, activeUrls);
 
         if (!Objects.equals(username, "anonymousUser")) {
@@ -58,7 +58,7 @@ public class MvcHomeService {
 
     public String showAllUserActiveURL(Model model) {
         String username = getUsername();
-        List<UrlDto> activeUserUrls = service.getAllUserActiveUrl(username).getActiveUserUrls();
+        List<UrlDto> activeUserUrls = service.getAllUserActiveUrl(username).getUserUrls();
         model.addAttribute(BASE_ATTRIBUTE, activeUserUrls);
         model.addAttribute(USER_LIST_FLAG, true);
 
