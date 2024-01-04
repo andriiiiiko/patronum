@@ -15,4 +15,6 @@ public interface UrlService {
     RedirectResponse redirectOriginalUrl(RedirectRequest request);
 
     GetAllActiveUrlsResponse getAllActiveUrls();
+
+    ExtensionTimeResponce getExtensionTime(ExtensionTimeRequest request);
 }

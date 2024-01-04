@@ -27,6 +27,7 @@ public class UrlServiceImpl implements UrlService {
     private final UrlRepository urlRepository;
     private final UserService userService;
     private List<Url> userUrls;
+    private LocalDateTime currentTime = LocalDateTime.now();
 
     @Override
     public GetAllUrlsResponse getAllUrls() {
@@ -164,13 +165,15 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     public RedirectResponse redirectOriginalUrl(RedirectRequest request) {
-        return urlRepository.findByShortUrl(request.getShortUrl())
-                .map(url -> {
-                    url.incrementVisitCount();
-                    urlRepository.save(url);
-                    return RedirectResponse.success(url.getOriginalUrl());
-                })
-                .orElse(RedirectResponse.failed(Error.INVALID_SHORT_URL));
+        Optional<Url> optionalUrl = urlRepository.findByShortUrl(request.getShortUrl());
+        if (optionalUrl.isEmpty()) {
+            return RedirectResponse.failed(Error.INVALID_SHORT_URL);
+        }
+        Url urls = optionalUrl.get();
+        if (currentTime.isAfter(urls.getExpirationDate())){
+            return RedirectResponse.failed(Error.EXPIRED_URL);
+        }
+        return RedirectResponse.success(urls.getOriginalUrl());
     }
 
     @Override
@@ -189,5 +192,23 @@ public class UrlServiceImpl implements UrlService {
 
                 .toList();
         return GetAllActiveUrlsResponse.success(urlDtos);
+    }
+
+    @Override
+    public ExtensionTimeResponce getExtensionTime(ExtensionTimeRequest request) {
+        Optional<Url> optionalUrl = urlRepository.findByShortUrl(request.getShortUrl());
+        if (optionalUrl.isEmpty()) {
+            return ExtensionTimeResponce.failed(Error.INVALID_SHORT_URL);
+        }
+
+        Url url = optionalUrl.get();
+        if (currentTime.isBefore(url.getExpirationDate())){
+            return ExtensionTimeResponce.failed(Error.TIME_NOT_PASSED);
+        }
+
+        url.setExpirationDate(currentTime.plusDays(30));
+        urlRepository.save(url);
+
+        return ExtensionTimeResponce.success();
     }
 }

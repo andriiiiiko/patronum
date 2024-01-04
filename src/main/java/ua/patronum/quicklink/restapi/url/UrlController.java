@@ -64,4 +64,9 @@ public class UrlController {
     public GetAllActiveUrlsResponse getAllActiveUrls() {
         return urlService.getAllActiveUrls();
     }
+
+    @PostMapping ("/extension")
+    public  ExtensionTimeResponce extensionTime(@RequestBody ExtensionTimeRequest request){
+        return urlService.getExtensionTime(request);
+    }
 }

@@ -6,5 +6,6 @@ public enum Error {
     INVALID_ACCESS,
     EMPTY_NEW_URL,
     INVALID_SHORT_URL,
-    EXPIRED_URL
+    EXPIRED_URL,
+    TIME_NOT_PASSED
 }
