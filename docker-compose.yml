@@ -10,9 +10,11 @@ services:
       - variables.env
 
   pgadmin:
-    image: dpage/pgadmin4
+    image: elestio/pgadmin
     restart: always
-    ports:
-      - "5050:81"
     env_file:
       - variables.env
+    ports:
+       - "8080:8080"
+    volumes:
+        - ./servers.json:/pgadmin4/servers.json
