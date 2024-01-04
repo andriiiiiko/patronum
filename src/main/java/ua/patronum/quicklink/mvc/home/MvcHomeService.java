@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import ua.patronum.quicklink.data.entity.Url;
 import ua.patronum.quicklink.data.repository.UrlRepository;
+import ua.patronum.quicklink.mvc.MvcError;
 import ua.patronum.quicklink.restapi.url.Error;
 import ua.patronum.quicklink.restapi.url.*;
 
@@ -18,8 +19,10 @@ import java.util.Optional;
 public class MvcHomeService {
 
     private static final String USER_LIST_FLAG = "isUserListPage";
-    private static final String BASE_TEMPLATE = "home-authorized";
+    private static final String AUTHORIZED_TEMPLATE = "home-authorized";
+    private static final String NOT_AUTHORIZED_TEMPLATE = "home-not-authorized";
     private static final String BASE_ATTRIBUTE = "urlList";
+    private static final String BASE_USERNAME = "anonymousUser";
     private final UrlServiceImpl service;
     private final UrlRepository repository;
 
@@ -28,11 +31,7 @@ public class MvcHomeService {
         List<UrlDto> urlList = service.getAllUrls().getUrls();
         model.addAttribute(BASE_ATTRIBUTE, urlList);
 
-        if (!Objects.equals(username, "anonymousUser")) {
-            return BASE_TEMPLATE;
-        } else {
-            return "home-not-authorized";
-        }
+        return templateValidator(username);
     }
 
     public String showAllActiveUrl(Model model) {
@@ -40,11 +39,7 @@ public class MvcHomeService {
         List<UrlDto> activeUrls = service.getAllActiveUrls().getUrls();
         model.addAttribute(BASE_ATTRIBUTE, activeUrls);
 
-        if (!Objects.equals(username, "anonymousUser")) {
-            return BASE_TEMPLATE;
-        } else {
-            return "home-not-authorized";
-        }
+        return templateValidator(username);
     }
 
     public String showAllUserURL(Model model) {
@@ -53,7 +48,7 @@ public class MvcHomeService {
         model.addAttribute(BASE_ATTRIBUTE, userUrls);
         model.addAttribute(USER_LIST_FLAG, true);
 
-        return BASE_TEMPLATE;
+        return AUTHORIZED_TEMPLATE;
     }
 
     public String showAllUserActiveURL(Model model) {
@@ -62,7 +57,7 @@ public class MvcHomeService {
         model.addAttribute(BASE_ATTRIBUTE, activeUserUrls);
         model.addAttribute(USER_LIST_FLAG, true);
 
-        return BASE_TEMPLATE;
+        return AUTHORIZED_TEMPLATE;
     }
 
     public String create(CreateUrlRequest request, Model model) {
@@ -71,9 +66,9 @@ public class MvcHomeService {
 
         if (!response.getError().equals(Error.OK)) {
             List<UrlDto> urls = service.getAllUrls().getUrls();
-            model.addAttribute("error", "Invalid URL");
+            model.addAttribute("error", MvcError.INVALID_URL.getErrorMessage());
             model.addAttribute(BASE_ATTRIBUTE, urls);
-            return BASE_TEMPLATE;
+            return AUTHORIZED_TEMPLATE;
         }
 
         return "redirect:/mvc/home";
@@ -102,7 +97,25 @@ public class MvcHomeService {
         return "redirect:" + originalUrl;
     }
 
+
+     public String getRedirect(Model model){
+        List<UrlDto> urls = service.getAllUrls().getUrls();
+        String username = getUsername();
+        model.addAttribute("error",MvcError.EXPIRED_URL.getErrorMessage());
+        model.addAttribute(BASE_ATTRIBUTE,urls);
+
+         return templateValidator(username);
+        }
+
     private String getUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    private String templateValidator(String username){
+    if (!Objects.equals(username, BASE_USERNAME)) {
+        return AUTHORIZED_TEMPLATE;
+    } else {
+        return NOT_AUTHORIZED_TEMPLATE;
+        }
     }
 }

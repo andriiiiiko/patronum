@@ -66,6 +66,7 @@
 
         .input-group {
             margin-bottom: 10px;
+
         }
 
         .create-btn {
@@ -75,15 +76,20 @@
         .radio-group {
             margin-top: 10px;
         }
-              .short-url {
-        color: #007bff;
-        cursor: pointer;
-        transition: color 0.3s;
-    }
-
-    .short-url:hover {
+        .short-url {
+            color: #007bff;
+            cursor: pointer;
+            transition: color 0.3s;
+         }
+        .alert-danger {
+            height: 50px;
+            width: 150px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .short-url:hover {
         color: #0056b3;
-    }
+        }
 
        table {
             width: 100%;
@@ -106,6 +112,9 @@
 </div>
 <div class="container">
     <h2>URL List</h2>
+    <div class="alert alert-danger text-left" role="alert" th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
     <form id="filterForm">
         <div class="checkbox-group">
             <label><input name="showActive" type="checkbox"> Show Active</label>

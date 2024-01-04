@@ -3,6 +3,7 @@ package ua.patronum.quicklink.mvc.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import ua.patronum.quicklink.mvc.MvcError;
 import ua.patronum.quicklink.restapi.auth.AuthService;
 import ua.patronum.quicklink.restapi.auth.RegistrationRequest;
 import ua.patronum.quicklink.restapi.auth.RegistrationResponse;
@@ -23,19 +24,19 @@ public class MvcAuthService {
                 return "redirect:/mvc/auth/login";
 
             case USER_ALREADY_EXISTS:
-                model.addAttribute(BASE_ATTRIBUTE, RegistrationError.USER_ALREADY_EXISTS.getErrorMessage());
+                model.addAttribute(BASE_ATTRIBUTE, MvcError.USER_ALREADY_EXISTS.getErrorMessage());
                 break;
 
             case INVALID_CONFIRM_PASSWORD:
-                model.addAttribute(BASE_ATTRIBUTE, RegistrationError.INVALID_CONFIRM_PASSWORD.getErrorMessage());
+                model.addAttribute(BASE_ATTRIBUTE, MvcError.INVALID_CONFIRM_PASSWORD.getErrorMessage());
                 break;
 
             case INVALID_PASSWORD:
-                model.addAttribute(BASE_ATTRIBUTE, RegistrationError.INVALID_PASSWORD.getErrorMessage());
+                model.addAttribute(BASE_ATTRIBUTE, MvcError.INVALID_PASSWORD.getErrorMessage());
                 break;
 
             case INVALID_USERNAME:
-                model.addAttribute(BASE_ATTRIBUTE, RegistrationError.INVALID_USERNAME.getErrorMessage());
+                model.addAttribute(BASE_ATTRIBUTE, MvcError.INVALID_USERNAME.getErrorMessage());
                 break;
         }
 

@@ -50,4 +50,9 @@ public class MvcHomeController {
     public String redirect(@PathVariable Long id) {
         return service.redirect(id);
     }
+
+    @GetMapping("/redirect/**")
+    public String getRedirect(Model model){
+        return service.getRedirect(model);
+    }
 }
