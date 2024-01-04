@@ -66,6 +66,7 @@
 
         .input-group {
             margin-bottom: 10px;
+
         }
 
         .create-btn {
@@ -75,15 +76,20 @@
         .radio-group {
             margin-top: 10px;
         }
-              .short-url {
-        color: #007bff;
-        cursor: pointer;
-        transition: color 0.3s;
-    }
-
-    .short-url:hover {
+        .short-url {
+            color: #007bff;
+            cursor: pointer;
+            transition: color 0.3s;
+         }
+        .alert-danger {
+            height: 50px;
+            width: 150px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .short-url:hover {
         color: #0056b3;
-    }
+        }
 
        table {
             width: 100%;
@@ -108,6 +114,9 @@
 </div>
 <div class="container center-container">
     <form action="/mvc/home/create" id="createForm" method="post">
+        <div class="alert alert-danger text-left" role="alert" th:if="${error}">
+            <p th:text="${error}"></p>
+        </div>
         <div class="input-group">
             <input class="form-control" id="inputUrl" name="originalUrl" placeholder="Enter URL" type="text">
             <div class="input-group-append">
