@@ -24,7 +24,7 @@ public class MvcHomeService {
     private final UrlRepository repository;
 
     public String showHomePage(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = getUsername();
         List<UrlDto> urlList = service.getAllUrls().getUrls();
         model.addAttribute(BASE_ATTRIBUTE, urlList);
 
@@ -36,7 +36,7 @@ public class MvcHomeService {
     }
 
     public String showAllActiveUrl(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = getUsername();
         List<UrlDto> activeUrls = service.getAllActiveUrls().getActiveUrls();
         model.addAttribute(BASE_ATTRIBUTE, activeUrls);
 
@@ -48,7 +48,7 @@ public class MvcHomeService {
     }
 
     public String showAllUserURL(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = getUsername();
         List<UrlDto> userUrls = service.getAllUserUrls(username).getUserUrls();
         model.addAttribute(BASE_ATTRIBUTE, userUrls);
         model.addAttribute(USER_LIST_FLAG, true);
@@ -57,7 +57,7 @@ public class MvcHomeService {
     }
 
     public String showAllUserActiveURL(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = getUsername();
         List<UrlDto> activeUserUrls = service.getAllUserActiveUrl(username).getActiveUserUrls();
         model.addAttribute(BASE_ATTRIBUTE, activeUserUrls);
         model.addAttribute(USER_LIST_FLAG, true);
@@ -66,7 +66,7 @@ public class MvcHomeService {
     }
 
     public String create(CreateUrlRequest request, Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = getUsername();
         CreateUrlResponse response = service.createUrl(username, request);
 
         if (!response.getError().equals(Error.OK)) {
@@ -80,7 +80,7 @@ public class MvcHomeService {
     }
 
     public String delete(Long id) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = getUsername();
         service.deleteUrlById(username, id);
 
         return "redirect:/home/user/list";
@@ -100,5 +100,9 @@ public class MvcHomeService {
         String originalUrl = response.getOriginalUrl();
 
         return "redirect:" + originalUrl;
+    }
+
+    private String getUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

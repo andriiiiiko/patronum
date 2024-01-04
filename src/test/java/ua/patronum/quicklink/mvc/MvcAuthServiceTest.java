@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
+import ua.patronum.quicklink.mvc.auth.MvcAuthService;
 import ua.patronum.quicklink.restapi.auth.AuthService;
 import ua.patronum.quicklink.restapi.auth.RegistrationRequest;
 import ua.patronum.quicklink.restapi.auth.RegistrationResponse;

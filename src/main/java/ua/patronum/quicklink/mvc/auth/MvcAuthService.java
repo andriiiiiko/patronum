@@ -18,20 +18,26 @@ public class MvcAuthService {
     public String registration(Model model, RegistrationRequest registrationRequest) {
         RegistrationResponse response = service.register(registrationRequest);
 
-        if (response.getError() == RegistrationResponse.Error.OK) {
-            return "redirect:/auth/login";
+        switch (response.getError()) {
+            case OK:
+                return "redirect:/auth/login";
 
-        } else if (response.getError() == RegistrationResponse.Error.USER_ALREADY_EXISTS) {
-            model.addAttribute(BASE_ATTRIBUTE, "User already exists");
+            case USER_ALREADY_EXISTS:
+                model.addAttribute(BASE_ATTRIBUTE, RegistrationError.USER_ALREADY_EXISTS.getErrorMessage());
+                break;
 
-        } else if (response.getError() == RegistrationResponse.Error.INVALID_CONFIRM_PASSWORD) {
-            model.addAttribute(BASE_ATTRIBUTE, "Invalid confirm password");
+            case INVALID_CONFIRM_PASSWORD:
+                model.addAttribute(BASE_ATTRIBUTE, RegistrationError.INVALID_CONFIRM_PASSWORD.getErrorMessage());
+                break;
 
-        } else if (response.getError() == RegistrationResponse.Error.INVALID_PASSWORD) {
-            model.addAttribute(BASE_ATTRIBUTE, "Invalid password");
+            case INVALID_PASSWORD:
+                model.addAttribute(BASE_ATTRIBUTE, RegistrationError.INVALID_PASSWORD.getErrorMessage());
+                break;
 
-        } else if (response.getError() == RegistrationResponse.Error.INVALID_USERNAME)
-            model.addAttribute(BASE_ATTRIBUTE, "Invalid username");
+            case INVALID_USERNAME:
+                model.addAttribute(BASE_ATTRIBUTE, RegistrationError.INVALID_USERNAME.getErrorMessage());
+                break;
+        }
 
         return "registration";
     }

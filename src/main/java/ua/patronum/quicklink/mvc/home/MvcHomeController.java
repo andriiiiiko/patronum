@@ -13,8 +13,7 @@ import ua.patronum.quicklink.restapi.url.CreateUrlRequest;
 @Controller
 @RequestMapping("/home")
 public class MvcHomeController {
-    private static final String USER_LIST_FLAG = "isUserListPage";
-    private static final String BASE_TEMPLATE = "home-authorized";
+
     private final MvcHomeService service;
 
     @GetMapping()

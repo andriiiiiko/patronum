@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> corsConfigurationSource())
                 .authorizeHttpRequests(authorize -> authorize
-                              .requestMatchers(BASE_MVS_URL,
+                        .requestMatchers(BASE_MVS_URL,
                                 "/auth/**",
                                 "/home/active",
                                 "/home/redirect/**",

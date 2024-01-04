@@ -7,6 +7,12 @@ import lombok.Data;
 @Data
 public class LoginResponse {
 
+    public enum Error {
+        OK,
+        INVALID_USER_NAME,
+        INVALID_PASSWORD
+    }
+
     private Error error;
     private String authToken;
 
@@ -16,11 +22,5 @@ public class LoginResponse {
 
     public static LoginResponse failed(Error error) {
         return builder().error(error).build();
-    }
-
-    public enum Error {
-        OK,
-        INVALID_USER_NAME,
-        INVALID_PASSWORD
     }
 }
