@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import ua.patronum.quicklink.data.entity.User;
 import ua.patronum.quicklink.data.repository.UserRepository;
 
 import java.util.Optional;
@@ -28,7 +29,7 @@ class CustomUserDetailsServiceTest {
 
         String username = "testUser";
         String password = "testPassword";
-        ua.patronum.quicklink.data.entity.User user = new ua.patronum.quicklink.data.entity.User();
+        User user = new User();
         user.setUsername(username);
         user.setPassword(password);
 
