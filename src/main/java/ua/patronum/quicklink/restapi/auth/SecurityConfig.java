@@ -38,18 +38,18 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> corsConfigurationSource())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(BASE_MVS_URL,
+                              .requestMatchers(BASE_MVS_URL,
                                 "/auth/**",
                                 "/home/active",
-                                "/home/redirect/**")
-                        .permitAll()
-                        .requestMatchers("/swagger/**",
+                                "/home/redirect/**",
+                                "/api/v1/auth/**",
+                                "/api/v1/urls/view/all",
+                                "/api/v1/urls/view/redirect",
+                                "/swagger/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
-                                "/webjars/**")
-                        .permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                                "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

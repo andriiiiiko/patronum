@@ -23,6 +23,7 @@ public class UrlController {
         return urlService.createUrl(principal.getName(), request);
     }
 
+
     @GetMapping("/view/all")
     @Operation(summary = "View all ShortURL",
             description = "Endpoint to view all ShortURL.")
@@ -30,12 +31,14 @@ public class UrlController {
         return urlService.getAllUrls();
     }
 
+
     @GetMapping("/view/all/user")
     @Operation(summary = "View all user's ShortURL",
             description = "Endpoint to view all user's ShortURL")
     public GetAllUserUrlsResponse getUserUrls(Principal principal) {
         return urlService.getAllUserUrls(principal.getName());
     }
+
 
     @GetMapping("/view/all/user/active")
     @Operation(summary = "View all active user's ShortURL",
