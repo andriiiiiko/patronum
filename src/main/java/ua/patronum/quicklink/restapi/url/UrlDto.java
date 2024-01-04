@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 public class UrlDto {
 
     private Long id;
+    private String username;
     private String originalUrl;
     private String shortUrl;
     private LocalDateTime dateCreated;
     private LocalDateTime expirationDate;
     private int visitCount;
-    private String username;
 }
