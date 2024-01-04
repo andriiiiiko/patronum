@@ -12,13 +12,12 @@ public class UrlValidator implements ConstraintValidator<ValidUrl, String> {
 
     @Override
     public void initialize(ValidUrl constraintAnnotation) {
-        // Initialization, not needed for this example
     }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
-            return false; // Null values are considered invalid
+            return false;
         }
 
         Pattern pattern = Pattern.compile(URL_PATTERN);

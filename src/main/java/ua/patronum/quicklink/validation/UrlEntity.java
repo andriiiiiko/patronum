@@ -19,5 +19,4 @@ public class UrlEntity {
     @ValidUrl
     private String originalUrl;
 
-    // Other fields...
 }
