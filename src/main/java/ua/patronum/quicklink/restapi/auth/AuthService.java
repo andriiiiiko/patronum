@@ -76,8 +76,7 @@ public class AuthService {
         }
 
         if (Objects.isNull(request.getPassword())
-                || (!isValidPassword(request.getPassword())))
-        {
+                || (!isValidPassword(request.getPassword()))) {
             return Optional.of(RegistrationResponse.Error.INVALID_PASSWORD);
         }
 
@@ -96,7 +95,7 @@ public class AuthService {
         }
 
         if (Objects.isNull(request.getPassword())
-                || request.getPassword().length() > MAX_PASSWORD_LENGTH){
+                || request.getPassword().length() > MAX_PASSWORD_LENGTH) {
             return Optional.of(LoginResponse.Error.INVALID_PASSWORD);
         }
 
