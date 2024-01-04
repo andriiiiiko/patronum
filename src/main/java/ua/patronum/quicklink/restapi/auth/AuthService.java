@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 public class AuthService {
 
     private static final int MAX_USER_ID_LENGTH = 50;
+    private static final int MIN_USER_ID_LENGTH = 3;
     private static final int MAX_PASSWORD_LENGTH = 50;
     private static final int MIN_PASSWORD_LENGTH = 3;
     private static final String REGEX = "^(?=.*[A-Z])(?=.*\\d).{";
@@ -68,13 +69,14 @@ public class AuthService {
     }
 
     private Optional<RegistrationResponse.Error> validateRegistrationFields(RegistrationRequest request) {
-        if (Objects.isNull(request.getUsername()) || request.getUsername().length() > MAX_USER_ID_LENGTH) {
+        if (Objects.isNull(request.getUsername())
+                || request.getUsername().length() > MAX_USER_ID_LENGTH
+                || request.getUsername().length() <= MIN_USER_ID_LENGTH) {
             return Optional.of(RegistrationResponse.Error.INVALID_USERNAME);
         }
 
         if (Objects.isNull(request.getPassword())
-            || (!isValidPassword(request.getPassword())))
-        {
+                || (!isValidPassword(request.getPassword()))) {
             return Optional.of(RegistrationResponse.Error.INVALID_PASSWORD);
         }
 
@@ -86,11 +88,14 @@ public class AuthService {
     }
 
     private Optional<LoginResponse.Error> validateLoginFields(LoginRequest request) {
-        if (Objects.isNull(request.getUsername()) || request.getUsername().length() > MAX_USER_ID_LENGTH) {
+        if (Objects.isNull(request.getUsername())
+                || request.getUsername().length() > MAX_USER_ID_LENGTH
+                || request.getUsername().length() <= MIN_USER_ID_LENGTH) {
             return Optional.of(LoginResponse.Error.INVALID_USER_NAME);
         }
 
-        if (Objects.isNull(request.getPassword()) || request.getPassword().length() > MAX_PASSWORD_LENGTH) {
+        if (Objects.isNull(request.getPassword())
+                || request.getPassword().length() > MAX_PASSWORD_LENGTH) {
             return Optional.of(LoginResponse.Error.INVALID_PASSWORD);
         }
 
