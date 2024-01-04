@@ -31,11 +31,7 @@ public class MvcHomeService {
         List<UrlDto> urlList = service.getAllUrls().getUrls();
         model.addAttribute(BASE_ATTRIBUTE, urlList);
 
-        if (!Objects.equals(username, BASE_USERNAME)) {
-            return AUTHORIZED_TEMPLATE;
-        } else {
-            return NOT_AUTHORIZED_TEMPLATE;
-        }
+        return templateValidator(username);
     }
 
     public String showAllActiveUrl(Model model) {
@@ -43,11 +39,7 @@ public class MvcHomeService {
         List<UrlDto> activeUrls = service.getAllActiveUrls().getUrls();
         model.addAttribute(BASE_ATTRIBUTE, activeUrls);
 
-        if (!Objects.equals(username, BASE_USERNAME)) {
-            return AUTHORIZED_TEMPLATE;
-        } else {
-            return NOT_AUTHORIZED_TEMPLATE;
-        }
+        return templateValidator(username);
     }
 
     public String showAllUserURL(Model model) {
@@ -112,14 +104,18 @@ public class MvcHomeService {
         model.addAttribute("error",MvcError.EXPIRED_URL.getErrorMessage());
         model.addAttribute(BASE_ATTRIBUTE,urls);
 
-         if (!Objects.equals(username, BASE_USERNAME)) {
-             return AUTHORIZED_TEMPLATE;
-         } else {
-             return NOT_AUTHORIZED_TEMPLATE;
-         }
+         return templateValidator(username);
         }
 
     private String getUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    private String templateValidator(String username){
+    if (!Objects.equals(username, BASE_USERNAME)) {
+        return AUTHORIZED_TEMPLATE;
+    } else {
+        return NOT_AUTHORIZED_TEMPLATE;
+        }
     }
 }
