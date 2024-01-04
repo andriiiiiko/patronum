@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.mvc;
+package ua.patronum.quicklink.mvc.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -7,16 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.patronum.quicklink.restapi.auth.AuthService;
 import ua.patronum.quicklink.restapi.auth.RegistrationRequest;
-import ua.patronum.quicklink.restapi.auth.RegistrationResponse;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/mvc/auth")
 public class MvcAuthController {
 
-    private final AuthService service;
+    private final MvcAuthService service;
 
     @GetMapping("/register")
     public String showRegistrationPage() {
@@ -25,14 +23,7 @@ public class MvcAuthController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute RegistrationRequest registrationRequest, Model model) {
-        RegistrationResponse response = service.register(registrationRequest);
-
-        if (response.getError() == RegistrationResponse.Error.OK) {
-            return "redirect:/auth/login";
-        } else {
-            model.addAttribute("error", response.getError().toString());
-            return "registration";
-        }
+        return service.registration(model, registrationRequest);
     }
 
     @GetMapping("/login")

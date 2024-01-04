@@ -23,28 +23,31 @@ public class UrlController {
         return urlService.createUrl(principal.getName(), request);
     }
 
-    @GetMapping("/view/all")//
+
+    @GetMapping("/view/all")
     @Operation(summary = "View all ShortURL",
             description = "Endpoint to view all ShortURL.")
     public GetAllUrlsResponse getAllUrls() {
         return urlService.getAllUrls();
     }
 
-    @GetMapping("/view/all/user")//
+
+    @GetMapping("/view/all/user")
     @Operation(summary = "View all user's ShortURL",
             description = "Endpoint to view all user's ShortURL")
     public GetAllUserUrlsResponse getUserUrls(Principal principal) {
         return urlService.getAllUserUrls(principal.getName());
     }
 
-    @GetMapping("/view/all/user/active")//
+
+    @GetMapping("/view/all/user/active")
     @Operation(summary = "View all active user's ShortURL",
             description = "Endpoint to view all  active user's ShortURL")
     public GetAllUserActiveUrlsResponse getAllUserActiveUrl(Principal principal) {
         return urlService.getAllUserActiveUrl(principal.getName());
     }
 
-    @PostMapping("/delete/{id}")//
+    @PostMapping("/delete/{id}")
     @Operation(summary = "Delete ShortURL by ID",
             description = "Endpoint to delete ShortURL by ID")
     public DeleteUrlResponse deleteUrlById(Principal principal, @PathVariable Long id) {
