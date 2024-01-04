@@ -35,7 +35,7 @@ class MvcAuthServiceTest {
 
         verify(authService).register(registrationRequest);
         verifyNoInteractions(model);
-        assertEquals("redirect:/auth/login", result);
+        assertEquals("redirect:/mvc/auth/login", result);
     }
 
     @Test
