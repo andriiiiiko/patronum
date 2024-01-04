@@ -1,0 +1,289 @@
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+ul,
+ol,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/* .App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+} */
+
+.App-link {
+  color: #380fcf;
+  font-size: 24px;
+  font-weight: 700;
+      &:hover {
+      scale: 1.2;
+    }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.App-layout {
+  width: 100vw;
+  height: 100vh; 
+}
+
+.App-header {
+  position: fixed;
+  width: 100vw;
+  height: 70px;
+  background-color: #9cb1ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 50px;
+  z-index: 100;
+}
+
+.App-footer {
+  width: 100vw;
+  height: 70px;
+  background-color: #9cb1ff;
+  text-align: center;
+  line-height: 70px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.App-container {
+  padding-top: 100px;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.About-info {
+  display: flex;
+  gap: 50px;
+  margin-top: 50px;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.App-Title {
+  text-align: center;  
+  font-size: 36px;
+}
+
+.App-command {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin-top: 50px; */
+}
+
+.App-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  /* margin-bottom: 50px; */
+}
+
+.App-team-info {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  grid-template-rows: repeat(2, 1fr);    
+  gap: 16px; 
+  margin-top: 50px;
+    text-align: center;
+}
+
+.team-member {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: aliceblue;
+  padding-bottom: 10px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  
+}
+
+.button {
+  padding: 10px;
+  border-radius: 50px;
+  background-color: #2501ff;
+  color: aliceblue;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  &:hover {
+    scale: 1.2;
+  }    
+}
+
+  .Auth-title {
+      color: #9cb1ff;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+  }
+
+  .Form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .Form-label {
+    display: flex; 
+    flex-direction: column;
+  }
+  
+  .Form-label p {
+  color: #380fcf;
+  font-size: 16px; 
+  font-weight: bold;
+  margin-bottom: 5px;
+  }
+  .Form-label input {
+    font-size: 16px; 
+  background-color: #ecf2ff; 
+  border: none; 
+  outline: none;
+  height: 30px;
+  border-radius: 10px;
+  padding: 10px;
+  }
+
+.Auth-text {
+  margin-top: 20px;
+
+}
+
+.Info-title {
+  display: flex;
+  flex-direction: row;
+  gap: 150px;
+  margin-bottom: 10px;
+  justify-content: space-between;
+}
+
+.Info-all {
+  display: flex;
+  gap: 50px;
+  position: relative;
+  margin-bottom: 10px;
+  justify-content: space-between;
+}
+
+.info-text {
+  display: flex;
+  width: 200px;  
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid black;
+}
+.info-text span {  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Convert-block {
+  display: flex;
+  gap: 40px;
+  align-items: start;
+  position: relative;
+}
+
+.Convert-block button {
+  height: 36px;
+  position: absolute;
+  top: 22px;
+  right: -120px;
+}
+
+.radio-block {
+  display: flex;
+  gap: 20px;
+}
+
+.radio-label{
+  display: flex;
+  gap: 10px;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  color: #380fcf !important;
+  margin-bottom: 20px;
+}
+
+.radio-label input {
+  width: 16px;
+  height: 16px;
+  border: 3px solid #380fcf !important;
+}
+
+  a {
+    text-decoration: none;
+  }

@@ -1,0 +1,11 @@
+.divWithImage {
+    display: flex;
+    align-items: center;
+    margin: 50px 0; /* Добавьте отступ между изображениями */
+}
+
+/* Опциональные стили для изображений */
+.divWithImage img {
+    max-width: 100%; /* Сделать изображение адаптивным */
+    height: auto;
+}
