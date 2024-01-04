@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.mvc;
+package ua.patronum.quicklink.mvc.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.mvc;
+package ua.patronum.quicklink.mvc.home;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
