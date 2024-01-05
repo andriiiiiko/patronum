@@ -10,14 +10,15 @@ public class LoginResponse {
     public enum Error {
         OK,
         INVALID_USER_NAME,
+        NAME_IS_EMPTY,
         INVALID_PASSWORD
     }
 
     private Error error;
-    private String authToken;
+    private String token;
 
     public static LoginResponse success(String authToken) {
-        return builder().error(Error.OK).authToken(authToken).build();
+        return builder().error(Error.OK).token(authToken).build();
     }
 
     public static LoginResponse failed(Error error) {

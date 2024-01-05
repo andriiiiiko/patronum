@@ -91,7 +91,7 @@ public class AuthService {
         if (Objects.isNull(request.getUsername())
                 || request.getUsername().length() > MAX_USER_ID_LENGTH
                 || request.getUsername().length() <= MIN_USER_ID_LENGTH) {
-            return Optional.of(LoginResponse.Error.INVALID_USER_NAME);
+            return Optional.of(LoginResponse.Error.NAME_IS_EMPTY);
         }
 
         if (Objects.isNull(request.getPassword())
