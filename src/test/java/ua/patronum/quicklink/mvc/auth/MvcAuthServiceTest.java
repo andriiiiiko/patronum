@@ -1,4 +1,4 @@
-package ua.patronum.quicklink.mvc;
+package ua.patronum.quicklink.mvc.auth;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
-import ua.patronum.quicklink.mvc.auth.MvcAuthService;
 import ua.patronum.quicklink.restapi.auth.AuthService;
 import ua.patronum.quicklink.restapi.auth.RegistrationRequest;
 import ua.patronum.quicklink.restapi.auth.RegistrationResponse;
@@ -19,7 +18,6 @@ class MvcAuthServiceTest {
 
     @Mock
     private AuthService authService;
-
     @InjectMocks
     private MvcAuthService mvcAuthService;
 
