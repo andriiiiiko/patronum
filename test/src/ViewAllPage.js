@@ -69,7 +69,8 @@ const ViewAllPage = () => {
                 <div key={item.id} className='Info-all'>
                     <div className='info-text'>
                         <p>
-                            <a href="#" onClick={() => handleRedirectClick(item.shortUrl)}>
+                            <a href={item.originalUrl} onClick={() => handleRedirectClick(item.shortUrl)}>
+                                {/*//блокирует редирект */}
                                 {item.shortUrl}
                             </a>
                         </p>

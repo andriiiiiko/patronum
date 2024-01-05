@@ -253,7 +253,7 @@ button {
 .Convert-block {
   display: flex;
   gap: 40px;
-  align-items: start;
+  align-items: flex-start;
   position: relative;
 }
 

@@ -1,5 +1,5 @@
 // ViewAllPage.js
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import axios from 'axios';
 import { BsEye } from "react-icons/bs";
 // import dataArr from './test.json'
@@ -9,10 +9,10 @@ const UserView = () => {
     const [data, setData] = useState([]);
     const [error, setError] = useState('');
     const [selectedOption, setSelectedOption] = useState(null);
-    const [filteredData, setFilteredData] = useState([]);
+    // const [filteredData, setFilteredData] = useState([]);
     const [originalUrl, setOriginalUrl] = useState('');
     const [description, setDescription] = useState('');
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
 
         try {
             const authToken = localStorage.getItem('authToken');
@@ -26,7 +26,7 @@ const UserView = () => {
 
             if (error === 'OK') {
                 setData(userUrls);
-                setFilteredData(userUrls);
+                // setFilteredData(userUrls);
             } else {
                 setError('Error fetching data');
             }
@@ -34,7 +34,7 @@ const UserView = () => {
             console.error('Unexpected error while fetching data', error);
             setError('Unexpected error while fetching data');
         }
-    };
+    },[selectedOption]);
     const handleRedirectClick = async (shortUrl) => {
         try {
             const response = await axios.post('http://localhost:80/api/v1/urls/view/redirect', { shortUrl });
@@ -55,7 +55,7 @@ const UserView = () => {
     useEffect(() => {
 
         fetchData();
-    }, [selectedOption]);
+    }, [fetchData]);
 
     const handleConvert = async () => {
         try {
@@ -133,15 +133,14 @@ const UserView = () => {
             const authToken = localStorage.getItem('authToken');
             const headers = { Authorization: `Bearer ${authToken}` };
 
-            const response =  await axios.post('http://localhost:80/api/v1/extension', { shortUrl });
-
+            const response =  await axios.post('http://localhost:80/api/v1/extension', { shortUrl }, { headers });
             const { error } = response.data;
 
             if (error === 'OK') {
                 // Обработка успешного удаления ссылки, если необходимо
                 console.log('URL deleted successfully');
                 // После удаления обновите данные, вызвав fetchData()
-                fetchData();
+                await fetchData();
             } else {
                 setError('Error deleting URL');
             }
@@ -218,8 +217,9 @@ const UserView = () => {
                         {data.map((item) => (
                             <div key={item.id} className='Info-all'>
                                 <div className='info-text'>
-                                    <p><a href="#" onClick={() => handleRedirectClick(item.shortUrl)}>
-                                        {item.shortUrl}
+                                    <p><a href={item.originalUrl} onClick={() => handleRedirectClick(item.shortUrl)}>
+                                        {/*блокирует редирект /*/}
+                                         {item.shortUrl}
                                     </a></p>
                                     <p><BsEye/> {item.visitCount}</p>
                                 </div>
