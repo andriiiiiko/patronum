@@ -237,13 +237,10 @@ class MvcHomeServiceTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
 
-        // Act
         String result = mvcHomeService.getRedirect(model);
 
-        // Assert
         assertEquals("home-authorized", result);
 
-        // Verify model interactions
         verify(model).addAttribute("error", MvcError.EXPIRED_URL.getErrorMessage());
         verify(model).addAttribute("urlList", urls);
     }
