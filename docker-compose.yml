@@ -5,14 +5,14 @@ services:
   quick:
     build: .
     ports:
-      - "80:80"
+      - "9999:9999"
     env_file:
       - variables.env
 
   frontend:
     image: andriiiiiko/quick-link-frontend:latest
     ports:
-      - "3000:3000"
+      - "80:3000"
 
   pgadmin:
     image: elestio/pgadmin
