@@ -9,6 +9,11 @@ services:
     env_file:
       - variables.env
 
+  frontend:
+    image: andriiiiiko/quick-link-frontend:latest
+    ports:
+      - "3000:3000"
+
   pgadmin:
     image: elestio/pgadmin
     restart: always
