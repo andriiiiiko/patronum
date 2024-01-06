@@ -17,10 +17,13 @@ class AuthServiceTest {
 
     @Mock
     private UserService userService;
+
     @Mock
     private PasswordEncoder passwordEncoder;
+
     @Mock
     private JwtUtil jwtUtil;
+
     @InjectMocks
     private AuthService authService;
 
