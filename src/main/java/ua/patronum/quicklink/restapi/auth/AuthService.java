@@ -104,7 +104,7 @@ public class AuthService {
 
     private boolean isValidPassword(String password) {
         return Pattern
-                .compile(REGEX + "{" +MIN_PASSWORD_LENGTH + "," + MAX_PASSWORD_LENGTH + "}$")
+                .compile(REGEX + "{" + MIN_PASSWORD_LENGTH + "," + MAX_PASSWORD_LENGTH + "}$")
                 .matcher(password).matches();
     }
 }
