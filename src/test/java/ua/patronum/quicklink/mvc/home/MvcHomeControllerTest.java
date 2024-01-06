@@ -110,11 +110,11 @@ class MvcHomeControllerTest {
     }
 
     @Test
-    void add30DaysTest() {
+    void addThirtyDaysTest() {
         Long id = 1L;
         when(service.getExtensionTime(id)).thenReturn("extensionTimePage");
 
-        String viewName = controller.add30Days(id);
+        String viewName = controller.addThirtyDays(id);
 
         assertEquals("extensionTimePage", viewName);
         verify(service, times(1)).getExtensionTime(id);

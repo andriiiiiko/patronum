@@ -57,7 +57,7 @@ public class MvcHomeController {
     }
 
     @PostMapping("/user/add/{id}")
-    public String add30Days(@PathVariable Long id){
+    public String addThirtyDays(@PathVariable Long id){
         return service.getExtensionTime(id);
     }
 }
