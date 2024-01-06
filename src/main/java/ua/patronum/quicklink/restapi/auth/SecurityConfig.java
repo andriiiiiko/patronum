@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .cors(c -> corsConfigurationSource())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(BASE_MVS_URL,
+                                "/static/**",
                                 "/mvc/auth/**",
                                 "/mvc/home/active",
                                 "/mvc/home/redirect/**",

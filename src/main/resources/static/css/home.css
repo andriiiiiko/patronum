@@ -1,0 +1,98 @@
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+            margin-left: 50px;
+        }
+
+        .header {
+            background-color: #007bff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            color: #ffffff;
+            font-size: 24px;
+            margin-right: auto;
+        }
+
+        .brand {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .brand-highlight {
+            color: #0056b3;
+        }
+
+        .btn-login, .btn-api {
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background-color: #ffffff;
+            color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+
+        .footer {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+
+        }
+
+        .create-btn {
+            margin-left: 10px;
+        }
+
+        .radio-group {
+            margin-top: 10px;
+        }
+        .short-url {
+            color: #007bff;
+            cursor: pointer;
+            transition: color 0.3s;
+         }
+        .alert-danger {
+            height: 50px;
+            width: 150px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .short-url:hover {
+        color: #0056b3;
+        }
+
+       table {
+            width: 100%;
+            margin-top: 20px;
+            table-layout: fixed;
+        }
+         th, td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            width: 120px;
+            text-align: left;
+            white-space: normal;
+            word-wrap: break-word;
+        }
