@@ -247,4 +247,23 @@ class MvcHomeServiceTest {
         verify(model).addAttribute("error", MvcError.EXPIRED_URL.getErrorMessage());
         verify(model).addAttribute("urlList", urls);
     }
+    @Test
+    void getExtensionTimeRedirectsToHomeWhenUrlNotFound() {
+        when(repository.findById(anyLong())).thenReturn(Optional.empty());
+
+        String result = mvcHomeService.getExtensionTime(1L);
+
+        assertEquals("redirect:/mvc/home", result);
+    }
+
+    @Test
+    void getExtensionTimeRedirectsToHomeAfterExtension() {
+        Url url = new Url(); // create a test Url object
+        when(repository.findById(anyLong())).thenReturn(Optional.of(url));
+        when(urlService.getExtensionTime(any(ExtensionTimeRequest.class))).thenReturn(ExtensionTimeResponse.success());
+
+        String result = mvcHomeService.getExtensionTime(1L);
+
+        assertEquals("redirect:/mvc/home", result);
+    }
 }

@@ -172,6 +172,7 @@ public class UrlServiceImpl implements UrlService {
                         .dateCreated(url.getDateCreated())
                         .expirationDate(url.getExpirationDate())
                         .visitCount(url.getVisitCount())
+                        .username(url.getUser().getUsername())
                         .build())
                 .toList();
     }
