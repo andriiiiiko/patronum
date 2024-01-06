@@ -8,9 +8,7 @@ import ua.patronum.quicklink.data.repository.UrlRepository;
 import ua.patronum.quicklink.restapi.auth.UserService;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -100,13 +98,17 @@ public class UrlServiceImpl implements UrlService {
         if (Objects.isNull(request.getOriginalUrl()) || request.getOriginalUrl().isEmpty()) {
             return Optional.of(Error.EMPTY_NEW_URL);
         }
-
         return Optional.empty();
     }
 
     private boolean isValidUrl(String inputUrl) {
-        int statusCode = getStatusCode(inputUrl);
-        return 200 <= statusCode && statusCode <= 204;
+        try {
+            new URI(inputUrl);
+            int statusCode = getStatusCode(inputUrl);
+            return 200 <= statusCode && statusCode <= 204;
+        } catch (Exception ignore) {
+            return false;
+        }
     }
 
     private int getStatusCode(String inputUrl) {
