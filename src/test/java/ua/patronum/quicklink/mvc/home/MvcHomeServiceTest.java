@@ -26,13 +26,16 @@ import static org.mockito.Mockito.*;
 
 class MvcHomeServiceTest {
 
-    private final UrlRepository repository = mock(UrlRepository.class);
     @Mock
     private UrlServiceImpl urlService;
+
     @Mock
     private Model model;
+
     @InjectMocks
     private MvcHomeService mvcHomeService;
+
+    private final UrlRepository repository = mock(UrlRepository.class);
 
     @BeforeEach
     void setUp() {

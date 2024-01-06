@@ -18,6 +18,7 @@ class MvcAuthServiceTest {
 
     @Mock
     private AuthService authService;
+
     @InjectMocks
     private MvcAuthService mvcAuthService;
 

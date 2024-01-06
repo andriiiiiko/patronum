@@ -20,6 +20,7 @@ class MvcAuthControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private MvcAuthService service;
 

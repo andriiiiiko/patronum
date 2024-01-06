@@ -16,6 +16,7 @@ class MvcHomeControllerTest {
 
     @Mock
     private MvcHomeService service;
+
     @InjectMocks
     private MvcHomeController controller;
 
