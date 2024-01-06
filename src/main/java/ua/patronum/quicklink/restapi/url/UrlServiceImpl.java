@@ -103,6 +103,10 @@ public class UrlServiceImpl implements UrlService {
 
     private boolean isValidUrl(String inputUrl) {
         try {
+
+            if (!inputUrl.startsWith("http://") && !inputUrl.startsWith(URL_PREFIX)) {
+                inputUrl = "http://" + inputUrl;
+            }
             new URI(inputUrl);
             int statusCode = getStatusCode(inputUrl);
             return 200 <= statusCode && statusCode <= 204;
