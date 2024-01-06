@@ -57,6 +57,11 @@
                     <form method="post" th:action="@{/mvc/home/user/list/delete/{id}(id=${url.id})}">
                         <button type="submit">Delete</button>
                     </form>
+                    <th:block th:if="${url.expirationDate.isBefore(T(java.time.LocalDateTime).now())}">
+                        <form method="post" th:action="@{/mvc/home/user/add/{id}(id=${url.id})}">
+                            <button type="submit">+30 days</button>
+                        </form>
+                    </th:block>
                 </td>
                 <td th:text="${url.id}"></td>
                 <td>

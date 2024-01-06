@@ -108,4 +108,15 @@ class MvcHomeControllerTest {
         assertEquals("getRedirectPage", viewName);
         verify(service, times(1)).getRedirect(model);
     }
+
+    @Test
+    void add30DaysTest() {
+        Long id = 1L;
+        when(service.getExtensionTime(id)).thenReturn("extensionTimePage");
+
+        String viewName = controller.add30Days(id);
+
+        assertEquals("extensionTimePage", viewName);
+        verify(service, times(1)).getExtensionTime(id);
+    }
 }

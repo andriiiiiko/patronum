@@ -55,4 +55,9 @@ public class MvcHomeController {
     public String getRedirect(Model model){
         return service.getRedirect(model);
     }
+
+    @PostMapping("/user/add/{id}")
+    public String add30Days(@PathVariable Long id){
+        return service.getExtensionTime(id);
+    }
 }

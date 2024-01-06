@@ -23,6 +23,7 @@ public class MvcHomeService {
     private static final String NOT_AUTHORIZED_TEMPLATE = "home-not-authorized";
     private static final String BASE_ATTRIBUTE = "urlList";
     private static final String BASE_USERNAME = "anonymousUser";
+    private static final String BASE_REDIRECT = "redirect:/mvc/home";
     private final UrlServiceImpl service;
     private final UrlRepository repository;
 
@@ -71,7 +72,7 @@ public class MvcHomeService {
             return AUTHORIZED_TEMPLATE;
         }
 
-        return "redirect:/mvc/home";
+        return BASE_REDIRECT;
     }
 
     public String delete(Long id) {
@@ -85,7 +86,7 @@ public class MvcHomeService {
         Optional<Url> byId = repository.findById(id);
 
         if (byId.isEmpty()) {
-            return "redirect:/mvc/home";
+            return BASE_REDIRECT;
         }
 
         Url url = byId.get();
@@ -94,7 +95,7 @@ public class MvcHomeService {
         RedirectResponse response = service.redirectOriginalUrl(request);
         String originalUrl = response.getOriginalUrl();
 
-        return "redirect:" + originalUrl;
+            return "redirect:" + originalUrl;
     }
 
 
@@ -105,6 +106,17 @@ public class MvcHomeService {
         model.addAttribute(BASE_ATTRIBUTE,urls);
 
          return templateValidator(username);
+        }
+
+        public String getExtensionTime(Long id){
+            Optional<Url> byId = repository.findById(id);
+            ExtensionTimeRequest request = new ExtensionTimeRequest();
+            if(byId.isEmpty()){
+                return "redirect:/mvc/home";
+            }
+            request.setShortUrl(byId.get().getShortUrl());
+            service.getExtensionTime(request);
+            return "redirect:/mvc/home";
         }
 
     private String getUsername() {
