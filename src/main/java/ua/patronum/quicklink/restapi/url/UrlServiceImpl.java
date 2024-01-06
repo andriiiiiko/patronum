@@ -9,8 +9,8 @@ import ua.patronum.quicklink.restapi.auth.UserService;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -27,62 +27,26 @@ public class UrlServiceImpl implements UrlService {
     private final UrlRepository urlRepository;
     private final UserService userService;
     private List<Url> userUrls;
+    private final LocalDateTime currentTime = LocalDateTime.now();
 
     @Override
     public GetAllUrlsResponse getAllUrls() {
         List<Url> allUrls = urlRepository.findAll();
-        List<UrlDto> urlDtos = allUrls
-                .stream()
-                .map(url -> UrlDto.builder()
-                        .id(url.getId())
-                        .originalUrl(url.getOriginalUrl())
-                        .shortUrl(url.getShortUrl())
-                        .dateCreated(url.getDateCreated())
-                        .expirationDate(url.getExpirationDate())
-                        .visitCount(url.getVisitCount())
-                        .username(url.getUser().getUsername())
-                        .build())
-                .toList();
-        return GetAllUrlsResponse.success(urlDtos);
+        return GetAllUrlsResponse.success(filterActivesUrlsTest(allUrls, false));
     }
 
     @Override
     public GetAllUserUrlsResponse getAllUserUrls(String username) {
         User user = userService.findByUsername(username);
         userUrls = urlRepository.findByUser(user);
-        List<UrlDto> urlDtos = userUrls.stream()
-                .map(url -> UrlDto.builder()
-                        .id(url.getId())
-                        .originalUrl(url.getOriginalUrl())
-                        .shortUrl(url.getShortUrl())
-                        .dateCreated(url.getDateCreated())
-                        .expirationDate(url.getExpirationDate())
-                        .visitCount(url.getVisitCount())
-                        .username(url.getUser().getUsername())
-                        .build())
-                .toList();
-        return GetAllUserUrlsResponse.success(urlDtos);
+        return GetAllUserUrlsResponse.success(filterActivesUrlsTest(userUrls, false));
     }
 
     @Override
     public GetAllUserActiveUrlsResponse getAllUserActiveUrl(String username) {
         User user = userService.findByUsername(username);
         userUrls = urlRepository.findByUser(user);
-
-        List<UrlDto> urlDtos = userUrls.stream()
-                .filter(url -> url.getExpirationDate() == null || url.getExpirationDate().isAfter(LocalDateTime.now()))
-                .map(url -> UrlDto.builder()
-                        .id(url.getId())
-                        .originalUrl(url.getOriginalUrl())
-                        .shortUrl(url.getShortUrl())
-                        .dateCreated(url.getDateCreated())
-                        .expirationDate(url.getExpirationDate())
-                        .visitCount(url.getVisitCount())
-                        .username(url.getUser().getUsername())
-                        .build())
-
-                .toList();
-        return GetAllUserActiveUrlsResponse.success(urlDtos);
+        return GetAllUserActiveUrlsResponse.success(filterActivesUrlsTest(userUrls, true));
     }
 
     @Override
@@ -95,13 +59,12 @@ public class UrlServiceImpl implements UrlService {
             return CreateUrlResponse.failed(validationError.get());
         }
 
-        String normalizeUrl = normalizeUrl(request);
-        if (!isValidUrl(normalizeUrl)) {
-            return CreateUrlResponse.failed(Error.EXPIRED_URL);
+        if (!isValidUrl(request.getOriginalUrl())) {
+            return CreateUrlResponse.failed(Error.INVALID_ORIGINAL_URL);
         }
 
         Url url = Url.builder()
-                .originalUrl(normalizeUrl)
+                .originalUrl(request.getOriginalUrl())
                 .shortUrl(generateShortUrl(SHORT_URL_LENGTH))
                 .dateCreated(LocalDateTime.now())
                 .visitCount(0)
@@ -116,6 +79,7 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public DeleteUrlResponse deleteUrlById(String username, Long id) {
         Optional<Url> optionalUrl = urlRepository.findById(id);
+
         if (optionalUrl.isEmpty()) {
             return DeleteUrlResponse.failed(Error.INVALID_ID);
         }
@@ -147,40 +111,58 @@ public class UrlServiceImpl implements UrlService {
 
     private int getStatusCode(String inputUrl) {
         try {
-            URL urlObject = new URL(inputUrl);
-            HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
+            URI url = new URI(inputUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.toURL().openConnection();
             connection.setRequestMethod("HEAD");
             return connection.getResponseCode();
-        } catch (IOException ignore) {
+        } catch (IOException | URISyntaxException ignore) {
             return -1;
         }
     }
 
-    private String normalizeUrl(CreateUrlRequest request) {
-        try {
-            new URL(request.getOriginalUrl());
-        } catch (MalformedURLException ignored) {
-            return URL_PREFIX + request.getOriginalUrl();
-        }
-        return request.getOriginalUrl();
-    }
-
     @Override
     public RedirectResponse redirectOriginalUrl(RedirectRequest request) {
-        return urlRepository.findByShortUrl(request.getShortUrl())
-                .map(url -> {
-                    url.incrementVisitCount();
-                    urlRepository.save(url);
-                    return RedirectResponse.success(url.getOriginalUrl());
-                })
-                .orElse(RedirectResponse.failed(Error.INVALID_SHORT_URL));
+        Optional<Url> optionalUrl = urlRepository.findByShortUrl(request.getShortUrl());
+
+        if (optionalUrl.isEmpty()) {
+            return RedirectResponse.failed(Error.INVALID_SHORT_URL);
+        }
+        Url urls = optionalUrl.get();
+
+        if (currentTime.isAfter(urls.getExpirationDate())) {
+            return RedirectResponse.failed(Error.TIME_NOT_PASSED);
+        }
+        return RedirectResponse.success(urls.getOriginalUrl());
     }
 
     @Override
     public GetAllActiveUrlsResponse getAllActiveUrls() {
         List<Url> allUrls = urlRepository.findAll();
-        List<UrlDto> urlDtos = allUrls.stream()
-                .filter(url -> url.getExpirationDate() == null || url.getExpirationDate().isAfter(LocalDateTime.now()))
+        return GetAllActiveUrlsResponse.success(filterActivesUrlsTest(allUrls, true));
+    }
+
+    @Override
+    public ExtensionTimeResponse getExtensionTime(ExtensionTimeRequest request) {
+        Optional<Url> optionalUrl = urlRepository.findByShortUrl(request.getShortUrl());
+
+        if (optionalUrl.isEmpty()) {
+            return ExtensionTimeResponse.failed(Error.INVALID_SHORT_URL);
+        }
+        Url url = optionalUrl.get();
+
+        if (currentTime.isBefore(url.getExpirationDate())) {
+            return ExtensionTimeResponse.failed(Error.TIME_NOT_PASSED);
+        }
+
+        url.setExpirationDate(currentTime.plusDays(30));
+        urlRepository.save(url);
+
+        return ExtensionTimeResponse.success();
+    }
+
+    private List<UrlDto> filterActivesUrlsTest(List<Url> allUrls, boolean isActives) {
+        return allUrls.stream()
+                .filter(url -> !isActives || url.getExpirationDate() == null || url.getExpirationDate().isAfter(LocalDateTime.now()))
                 .map(url -> UrlDto.builder()
                         .id(url.getId())
                         .originalUrl(url.getOriginalUrl())
@@ -188,10 +170,7 @@ public class UrlServiceImpl implements UrlService {
                         .dateCreated(url.getDateCreated())
                         .expirationDate(url.getExpirationDate())
                         .visitCount(url.getVisitCount())
-                        .username(url.getUser().getUsername())
                         .build())
-
                 .toList();
-        return GetAllActiveUrlsResponse.success(urlDtos);
     }
 }
