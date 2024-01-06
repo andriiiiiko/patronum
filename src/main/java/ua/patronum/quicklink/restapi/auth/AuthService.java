@@ -17,7 +17,7 @@ public class AuthService {
     private static final int MIN_USER_ID_LENGTH = 3;
     private static final int MAX_PASSWORD_LENGTH = 50;
     private static final int MIN_PASSWORD_LENGTH = 3;
-    private static final String REGEX = "^(?=.*[A-Z])(?=.*\\d).{";
+    private static final String REGEX = "^(?=.*[A-Z])(?=.*\\d).";
 
     private final JwtUtil jwtUtil;
     private final UserService userService;
@@ -91,7 +91,7 @@ public class AuthService {
         if (Objects.isNull(request.getUsername())
                 || request.getUsername().length() > MAX_USER_ID_LENGTH
                 || request.getUsername().length() <= MIN_USER_ID_LENGTH) {
-            return Optional.of(LoginResponse.Error.INVALID_USER_NAME);
+            return Optional.of(LoginResponse.Error.NAME_IS_EMPTY);
         }
 
         if (Objects.isNull(request.getPassword())
@@ -104,7 +104,7 @@ public class AuthService {
 
     private boolean isValidPassword(String password) {
         return Pattern
-                .compile(REGEX + MIN_PASSWORD_LENGTH + "," + MAX_PASSWORD_LENGTH + "}$")
+                .compile(REGEX + "{" + MIN_PASSWORD_LENGTH + "," + MAX_PASSWORD_LENGTH + "}$")
                 .matcher(password).matches();
     }
 }

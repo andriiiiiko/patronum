@@ -19,6 +19,7 @@ class JwtUtilTest {
 
     @Mock
     private UserDetailsService userDetailsService;
+
     @InjectMocks
     private JwtUtil jwtUtil;
 
@@ -33,7 +34,6 @@ class JwtUtilTest {
 
     @Test
     void validateToken_ValidAndInvalidTokens_ReturnsCorrectResults() {
-
         String validUsername = "ValidUser";
         UserDetails validUserDetails = new User(validUsername, "password", Collections.emptyList());
 

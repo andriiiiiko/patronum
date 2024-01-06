@@ -17,10 +17,13 @@ class AuthServiceTest {
 
     @Mock
     private UserService userService;
+
     @Mock
     private PasswordEncoder passwordEncoder;
+
     @Mock
     private JwtUtil jwtUtil;
+
     @InjectMocks
     private AuthService authService;
 
@@ -106,7 +109,7 @@ class AuthServiceTest {
 
         LoginResponse response = authService.login(request);
         assertEquals(LoginResponse.Error.OK, response.getError());
-        assertNotNull(response.getAuthToken());
+        assertNotNull(response.getToken());
 
         verify(userService, times(1)).findByUsername("Test");
         verify(passwordEncoder, times(1))
@@ -115,16 +118,29 @@ class AuthServiceTest {
     }
 
     @Test
+    void login_Name_Is_Empty_Failed() {
+
+        LoginRequest request = new LoginRequest("", "TestFailed");
+
+        LoginResponse response = authService.login(request);
+        assertEquals(LoginResponse.Error.NAME_IS_EMPTY, response.getError());
+        assertNull(response.getToken());
+
+        verify(userService, times(0)).findByUsername("");
+        verify(jwtUtil, times(0)).generateToken("");
+    }
+
+    @Test
     void login_Invalid_Username_Failed() {
 
-        LoginRequest request = new LoginRequest("Tes", "TestFailed");
+        LoginRequest request = new LoginRequest("Test1", "TestFailed");
 
         LoginResponse response = authService.login(request);
         assertEquals(LoginResponse.Error.INVALID_USER_NAME, response.getError());
-        assertNull(response.getAuthToken());
+        assertNull(response.getToken());
 
-        verify(userService, times(0)).findByUsername("Tes");
-        verify(jwtUtil, times(0)).generateToken("Tes");
+        verify(userService, times(1)).findByUsername("Test1");
+        verify(jwtUtil, times(0)).generateToken("Test1");
     }
 
     @Test
@@ -137,11 +153,25 @@ class AuthServiceTest {
 
         LoginResponse response = authService.login(request);
         assertEquals(LoginResponse.Error.INVALID_PASSWORD, response.getError());
-        assertNull(response.getAuthToken());
+        assertNull(response.getToken());
 
         verify(userService, times(1)).findByUsername("Test");
         verify(passwordEncoder, times(1))
                 .matches("Test5678", existingUser.getPassword());
         verify(jwtUtil, times(0)).generateToken("Test");
+    }
+
+    @Test
+    void login_Invalid_Password_Max_length_Failed() {
+
+        LoginRequest request = new LoginRequest("Test",
+                "12345678-10-2345678-20-2345678-30-2345678-40-2345678-50-2");
+
+        LoginResponse response = authService.login(request);
+        assertEquals(LoginResponse.Error.INVALID_PASSWORD, response.getError());
+        assertNull(response.getToken());
+
+        verify(userService, times(0)).findByUsername("Test1");
+        verify(jwtUtil, times(0)).generateToken("Test1");
     }
 }
