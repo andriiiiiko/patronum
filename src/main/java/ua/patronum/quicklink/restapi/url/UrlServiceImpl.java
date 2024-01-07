@@ -62,7 +62,7 @@ public class UrlServiceImpl implements UrlService {
         }
 
         Url url = Url.builder()
-                .originalUrl(request.getOriginalUrl())
+                .originalUrl(normalizationUrl(request.getOriginalUrl()))
                 .shortUrl(generateShortUrl(SHORT_URL_LENGTH))
                 .dateCreated(LocalDateTime.now())
                 .visitCount(0)
@@ -103,14 +103,19 @@ public class UrlServiceImpl implements UrlService {
 
     private boolean isValidUrl(String inputUrl) {
         try {
-            if (!inputUrl.startsWith(URL_PREFIX)) {
-                inputUrl = URL_PREFIX + inputUrl;
-            }
-            new URI(inputUrl);
-            int statusCode = getStatusCode(inputUrl);
+            new URI(normalizationUrl(inputUrl));
+            int statusCode = getStatusCode(normalizationUrl(inputUrl));
             return 200 <= statusCode && statusCode <= 204;
         } catch (Exception ignore) {
             return false;
+        }
+    }
+
+    private String normalizationUrl (String inputUrl){
+        if (!inputUrl.startsWith(URL_PREFIX)) {
+            return URL_PREFIX + inputUrl;
+        }else {
+            return inputUrl;
         }
     }
 
@@ -171,7 +176,8 @@ public class UrlServiceImpl implements UrlService {
 
     private List<UrlDto> filterActivesUrlsTest(List<Url> allUrls, boolean isActives) {
         return allUrls.stream()
-                .filter(url -> !isActives || url.getExpirationDate() == null || url.getExpirationDate().isAfter(LocalDateTime.now()))
+                .filter(url -> !isActives || url.getExpirationDate() == null
+                        || url.getExpirationDate().isAfter(LocalDateTime.now()))
                 .map(url -> UrlDto.builder()
                         .id(url.getId())
                         .originalUrl(url.getOriginalUrl())
