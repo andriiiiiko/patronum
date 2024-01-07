@@ -22,8 +22,10 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UrlServiceTest {
+
     @Mock
     private UrlRepository urlRepository;
+
     @Mock
     private UserService userService;
 
