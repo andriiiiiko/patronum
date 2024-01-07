@@ -51,6 +51,7 @@ class UrlTest {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime expirationDate = LocalDateTime.now().plusDays(30);
         Url otherUrl = Url.builder()
+                .id(1L)
                 .originalUrl("https://example.com")
                 .shortUrl("https://short.url/abc")
                 .dateCreated(now)
@@ -59,6 +60,7 @@ class UrlTest {
                 .user(new User())
                 .build();
 
+        url.setId(1L);
         url.setDateCreated(now);
         url.setExpirationDate(expirationDate);
         url.setVisitCount(0);
@@ -139,6 +141,6 @@ class UrlTest {
         assertEquals(expirationDate, url.getExpirationDate());
         assertEquals(visitCount, url.getVisitCount());
         assertEquals(user, url.getUser());
+
     }
 }
-
