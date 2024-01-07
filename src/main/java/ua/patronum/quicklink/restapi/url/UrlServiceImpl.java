@@ -1,6 +1,10 @@
 package ua.patronum.quicklink.restapi.url;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.stereotype.Service;
 import ua.patronum.quicklink.data.entity.Url;
 import ua.patronum.quicklink.data.entity.User;
@@ -8,7 +12,9 @@ import ua.patronum.quicklink.data.repository.UrlRepository;
 import ua.patronum.quicklink.restapi.auth.UserService;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -17,15 +23,22 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+//@EnableCaching
 public class UrlServiceImpl implements UrlService {
+
+    private static final ConcurrentMapCacheManager cacheManager = new ConcurrentMapCacheManager();
 
     private static final int SHORT_URL_LENGTH = 8;
     private static final String URL_PREFIX = "https://";
 
     private final UrlRepository urlRepository;
     private final UserService userService;
+
     private List<Url> userUrls;
     private final LocalDateTime currentTime = LocalDateTime.now();
+
+
+    private static final Logger logger = LoggerFactory.getLogger(UrlServiceImpl.class);
 
     @Override
     public GetAllUrlsResponse getAllUrls() {
@@ -129,19 +142,43 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     public RedirectResponse redirectOriginalUrl(RedirectRequest request) {
-        Optional<Url> optionalUrl = urlRepository.findByShortUrl(request.getShortUrl());
+        logger.error("Test cache -> " + request.getShortUrl());
+        Cache.ValueWrapper wrapper = Objects.requireNonNull(cacheManager.getCache("OriginalUrl")).get(request.getShortUrl());
 
-        if (optionalUrl.isEmpty()) {
-            return RedirectResponse.failed(Error.INVALID_SHORT_URL);
-        }
-        Url urls = optionalUrl.get();
+        if (wrapper != null) {
+            Url urls = (Url) wrapper.get();
 
-        if (currentTime.isAfter(urls.getExpirationDate())) {
-            return RedirectResponse.failed(Error.TIME_NOT_PASSED);
+            if (urls != null) {
+                if (currentTime.isAfter(urls.getExpirationDate())) {
+                    return RedirectResponse.failed(Error.TIME_NOT_PASSED);
+                }
+
+                urls.incrementVisitCount();
+                urlRepository.save(urls);
+                logger.error("Test cache after increment in IF -> " + request.getShortUrl());
+                return RedirectResponse.success(urls.getOriginalUrl());
+            } else {
+                return RedirectResponse.failed(Error.SOME_ERROR_MESSAGE);
+            }
+        } else {
+            Optional<Url> optionalUrl = urlRepository.findByShortUrl(request.getShortUrl());
+
+            if (optionalUrl.isEmpty()) {
+                return RedirectResponse.failed(Error.INVALID_SHORT_URL);
+            }
+
+            Url urls = optionalUrl.get();
+
+            if (currentTime.isAfter(urls.getExpirationDate())) {
+                return RedirectResponse.failed(Error.TIME_NOT_PASSED);
+            }
+
+            urls.incrementVisitCount();
+            urlRepository.save(urls);
+            Objects.requireNonNull(cacheManager.getCache("OriginalUrl")).put(request.getShortUrl(), urls);
+            logger.error("Test cache after increment in ELSE -> " + request.getShortUrl());
+            return RedirectResponse.success(urls.getOriginalUrl());
         }
-        urls.incrementVisitCount();
-        urlRepository.save(urls);
-        return RedirectResponse.success(urls.getOriginalUrl());
     }
 
     @Override
