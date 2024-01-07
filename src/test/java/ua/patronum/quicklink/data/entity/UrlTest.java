@@ -48,7 +48,7 @@ class UrlTest {
 
     @Test
     void testDataAnnotation() {
-       Url otherUrl = Url.builder()
+        Url otherUrl = Url.builder()
                 .originalUrl("https://example.com")
                 .shortUrl("https://short.url/abc")
                 .user(new User())
@@ -63,12 +63,13 @@ class UrlTest {
 
     @Test
     void testFullConstructor() {
-       Url fullUrl = new Url(
+        LocalDateTime now = LocalDateTime.now();
+        Url fullUrl = new Url(
                 1L,
                 "https://example.com",
                 "https://short.url/abc",
-                LocalDateTime.now(),
-                LocalDateTime.now().plusDays(30),
+                now,
+                now.plusDays(30),
                 0,
                 new User()
         );
@@ -76,7 +77,7 @@ class UrlTest {
         assertEquals(1L, fullUrl.getId());
         assertEquals("https://example.com", fullUrl.getOriginalUrl());
         assertEquals("https://short.url/abc", fullUrl.getShortUrl());
-        assertNotNull(fullUrl.getDateCreated());
+        assertEquals(now, fullUrl.getDateCreated());
         assertNotNull(fullUrl.getExpirationDate());
         assertEquals(0, fullUrl.getVisitCount());
         assertNotNull(fullUrl.getUser());
@@ -104,4 +105,32 @@ class UrlTest {
         assertNotNull(emptyUrl.getUser());
         assertEquals(expectedUser, emptyUrl.getUser());
     }
+
+    @Test
+    void testSetters() {
+        Long id = 456L;
+        String originalUrl = "https://newexample.com";
+        String shortUrl = "https://newshort.url/xyz";
+        LocalDateTime dateCreated = LocalDateTime.now();
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(15);
+        int visitCount = 99;
+        User user = new User();
+
+        url.setId(id);
+        url.setOriginalUrl(originalUrl);
+        url.setShortUrl(shortUrl);
+        url.setDateCreated(dateCreated);
+        url.setExpirationDate(expirationDate);
+        url.setVisitCount(visitCount);
+        url.setUser(user);
+
+        assertEquals(id, url.getId());
+        assertEquals(originalUrl, url.getOriginalUrl());
+        assertEquals(shortUrl, url.getShortUrl());
+        assertEquals(dateCreated, url.getDateCreated());
+        assertEquals(expirationDate, url.getExpirationDate());
+        assertEquals(visitCount, url.getVisitCount());
+        assertEquals(user, url.getUser());
+    }
 }
+
