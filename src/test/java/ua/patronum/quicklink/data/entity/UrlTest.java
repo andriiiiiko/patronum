@@ -4,10 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.within;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UrlTest {
@@ -146,6 +143,7 @@ class UrlTest {
         assertEquals(user, url.getUser());
 
     }
+
     @Test
     void testEquals() {
         LocalDateTime now = LocalDateTime.now();

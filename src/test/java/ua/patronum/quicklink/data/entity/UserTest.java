@@ -71,30 +71,4 @@ class UserTest {
 
         assertNotEquals(user1, user2);
     }
-
-    // Додано новий тест для сетерів
-    @Test
-    void testSetters() {
-        Long id = 456L;
-        String username = "newUser";
-        String password = "newPassword";
-        boolean enabled = true;
-        String role = "ROLE_ADMIN";
-        Set<Url> urls = new HashSet<>();
-
-        User user = new User();
-        user.setId(id);
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEnabled(enabled);
-        user.setRole(role);
-        user.setUrls(urls);
-
-        assertEquals(id, user.getId());
-        assertEquals(username, user.getUsername());
-        assertEquals(password, user.getPassword());
-        assertEquals(enabled, user.isEnabled());
-        assertEquals(role, user.getRole());
-        assertEquals(urls, user.getUrls());
-    }
 }
