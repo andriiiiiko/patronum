@@ -48,13 +48,21 @@ class UrlTest {
 
     @Test
     void testDataAnnotation() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(30);
         Url otherUrl = Url.builder()
                 .originalUrl("https://example.com")
                 .shortUrl("https://short.url/abc")
+                .dateCreated(now)
+                .expirationDate(expirationDate)
+                .visitCount(0)
                 .user(new User())
                 .build();
 
-        otherUrl.setDateCreated(url.getDateCreated());
+        url.setDateCreated(now);
+        url.setExpirationDate(expirationDate);
+        url.setVisitCount(0);
+
 
         assertEquals(url, otherUrl);
         assertEquals(url.hashCode(), otherUrl.hashCode());
