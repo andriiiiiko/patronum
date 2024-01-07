@@ -168,5 +168,48 @@ class UrlTest {
         url2.setOriginalUrl("https://modified.example.com");
 
         assertNotEquals(url1, url2);
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setOriginalUrl("https://example.com"); // Повертаємо оригінальну адресу для подальших перевірок
+
+        url2.setShortUrl("https://modified.short.url");
+        assertNotEquals(url1, url2);
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setShortUrl("https://short.url/abc");
+
+        url2.setDateCreated(now.minusDays(1));
+        assertNotEquals(url1, url2);
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setDateCreated(now);
+
+        url2.setExpirationDate(now.plusDays(1));
+        assertNotEquals(url1, url2);
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setExpirationDate(null);
+
+        url2.setVisitCount(42);
+        assertNotEquals(url1, url2);
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setVisitCount(0);
+
+        User differentUser = User.builder()
+                .username("differentUser")
+                .password("password123")
+                .enabled(true)
+                .role("ROLE_USER")
+                .build();
+
+        url2.setUser(differentUser);
+        assertNotEquals(url1, url2);
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setUser(url1.getUser());
+
+        assertEquals(url1, url2);
+        assertEquals(url1.hashCode(), url2.hashCode());
     }
 }
