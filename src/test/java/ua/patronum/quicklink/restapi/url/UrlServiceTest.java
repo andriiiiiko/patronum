@@ -1,5 +1,6 @@
 package ua.patronum.quicklink.restapi.url;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UrlServiceTest {
+class UrlServiceTest {
 
     @Mock
     private UrlRepository urlRepository;
@@ -32,10 +33,22 @@ public class UrlServiceTest {
     @InjectMocks
     private UrlServiceImpl urlService;
 
+    private User user;
+    private List<Url> mockUrls;
+
+    @BeforeEach
+    void setUp() {
+        user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
+
+        mockUrls = Arrays.asList(
+                new Url(1L, "https://www.example.com/1", "abc123", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user),
+                new Url(2L, "https://www.example.com/2", "def456", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user)
+        );
+    }
+
     @Test
     void test_Create_Url_Success() {
 
-        User user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
         String originalUrl = "https://www.iloveimg.com/";
         CreateUrlRequest request = new CreateUrlRequest();
         request.setOriginalUrl(originalUrl);
@@ -54,7 +67,6 @@ public class UrlServiceTest {
     @Test
     void test_Create_Url_Failed() {
 
-        User user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
         String originalUrl = "";
         CreateUrlRequest request = new CreateUrlRequest();
         request.setOriginalUrl(originalUrl);
@@ -68,12 +80,6 @@ public class UrlServiceTest {
     @Test
     void test_Get_All_Urls_Success() {
 
-        User user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
-        List<Url> mockUrls = Arrays.asList(
-                new Url(1L, "https://www.example.com/1", "abc123", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user),
-                new Url(2L, "https://www.example.com/2", "def456", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user)
-        );
-
         when(urlRepository.findAll()).thenReturn(mockUrls);
         GetAllUrlsResponse response = urlService.getAllUrls();
         List<UrlDto> urlDtos = response.getUrls();
@@ -83,47 +89,29 @@ public class UrlServiceTest {
     @Test
     void test_Get_All_User_Urls_Success() {
 
-        User user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
         when(userService.findByUsername(user.getUsername())).thenReturn(user);
 
-        List<Url> userUrls = Arrays.asList(
-                new Url(1L, "https://www.example.com/1", "abc123", LocalDateTime.now(), null, 0, user),
-                new Url(2L, "https://www.example.com/2", "def456", LocalDateTime.now(), null, 0, user)
-        );
-
-        when(urlRepository.findByUser(user)).thenReturn(userUrls);
+        when(urlRepository.findByUser(user)).thenReturn(mockUrls);
 
         GetAllUserUrlsResponse response = urlService.getAllUserUrls(user.getUsername());
         List<UrlDto> urlDtos = response.getUserUrls();
-        assertEquals(userUrls.size(), urlDtos.size());
+        assertEquals(mockUrls.size(), urlDtos.size());
     }
 
     @Test
     void test_Get_All_User_Active_Urls_Success() {
 
-        User user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
         when(userService.findByUsername(user.getUsername())).thenReturn(user);
 
-        List<Url> userActiveUrls = Arrays.asList(
-                new Url(1L, "https://www.example.com/1", "abc123", LocalDateTime.now(), null, 0, user),
-                new Url(2L, "https://www.example.com/2", "def456", LocalDateTime.now(), null, 0, user)
-        );
-
-        when(urlRepository.findByUser(user)).thenReturn(userActiveUrls);
+        when(urlRepository.findByUser(user)).thenReturn(mockUrls);
 
         GetAllUserActiveUrlsResponse response = urlService.getAllUserActiveUrl(user.getUsername());
         List<UrlDto> urlDtos = response.getUserUrls();
-        assertEquals(userActiveUrls.size(), urlDtos.size());
+        assertEquals(mockUrls.size(), urlDtos.size());
     }
 
     @Test
     void test_Get_All_Active_Urls_Success() {
-
-        User user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
-        List<Url> mockUrls = Arrays.asList(
-                new Url(1L, "https://www.example.com/1", "abc123", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user),
-                new Url(2L, "https://www.example.com/2", "def456", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user)
-        );
 
         when(urlRepository.findAll()).thenReturn(mockUrls);
 
@@ -169,7 +157,6 @@ public class UrlServiceTest {
     void test_Delete_By_Id_Success() {
 
         Long urlIdToDelete = 1L;
-        User user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
         Url urlToDelete = new Url(urlIdToDelete, "https://www.example.com/delete", "delete123", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user);
 
         when(urlRepository.findById(urlIdToDelete)).thenReturn(Optional.of(urlToDelete));
@@ -184,7 +171,6 @@ public class UrlServiceTest {
     void test_Delete_By_Id_Failed() {
 
         Long urlIdToDelete = 10L;
-        User user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
         Url urlToDelete = new Url(1L, "https://www.example.com/delete", "delete123", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user);
 
         when(urlRepository.findById(urlIdToDelete)).thenReturn(Optional.of(urlToDelete));
