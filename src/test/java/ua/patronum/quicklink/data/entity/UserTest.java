@@ -1,5 +1,6 @@
 package ua.patronum.quicklink.data.entity;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -8,6 +9,13 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
+
+    private User user;
+
+    @BeforeEach
+    void setUp() {
+        user = new User();
+    }
 
     @Test
     void testNoArgsConstructor() {
@@ -70,5 +78,30 @@ class UserTest {
         User user2 = new User(2L, "user2", "password2", false, "ROLE_ADMIN", urls2);
 
         assertNotEquals(user1, user2);
+    }
+
+    @Test
+    void testSetters() {
+        Long id = 42L;
+        String username = "testUser";
+        String password = "password123";
+        boolean enabled = true;
+        String role = "ROLE_USER";
+        Set<Url> urls = new HashSet<>();
+        urls.add(Url.builder().originalUrl("https://example.com").shortUrl("https://short.url").build());
+
+        user.setId(id);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEnabled(enabled);
+        user.setRole(role);
+        user.setUrls(urls);
+
+        assertEquals(id, user.getId());
+        assertEquals(username, user.getUsername());
+        assertEquals(password, user.getPassword());
+        assertEquals(enabled, user.isEnabled());
+        assertEquals(role, user.getRole());
+        assertEquals(urls, user.getUrls());
     }
 }
