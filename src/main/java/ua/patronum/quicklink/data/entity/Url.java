@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"expirationDate", "visitCount", "user"})
 @Builder
 @Table(name = "urls")
 @NoArgsConstructor
