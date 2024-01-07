@@ -171,7 +171,8 @@ public class UrlServiceImpl implements UrlService {
 
     private List<UrlDto> filterActivesUrlsTest(List<Url> allUrls, boolean isActives) {
         return allUrls.stream()
-                .filter(url -> !isActives || url.getExpirationDate() == null || url.getExpirationDate().isAfter(LocalDateTime.now()))
+                .filter(url -> !isActives || url.getExpirationDate() == null 
+                        || url.getExpirationDate().isAfter(LocalDateTime.now()))
                 .map(url -> UrlDto.builder()
                         .id(url.getId())
                         .originalUrl(url.getOriginalUrl())
