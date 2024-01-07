@@ -134,4 +134,71 @@ class UserTest {
 
         assertEquals(expectedToString, user.toString());
     }
+
+    @Test
+    void testEquals() {
+        Long id = 1L;
+        String username = "testUser";
+        String password = "password123";
+        boolean enabled = true;
+        String role = "ROLE_USER";
+        Set<Url> urls = new HashSet<>();
+        urls.add(Url.builder().originalUrl("https://example.com").shortUrl("https://short.url").build());
+
+        User user1 = User.builder()
+                .id(id)
+                .username(username)
+                .password(password)
+                .enabled(enabled)
+                .role(role)
+                .urls(urls)
+                .build();
+
+        User user2 = User.builder()
+                .id(id)
+                .username(username)
+                .password(password)
+                .enabled(enabled)
+                .role(role)
+                .urls(urls)
+                .build();
+
+        assertEquals(user1, user2);
+
+        user2.setUsername("modifiedUser");
+
+        assertNotEquals(user1, user2);
+        assertNotEquals(user1.hashCode(), user2.hashCode());
+
+        user2.setUsername(username);
+
+        user2.setPassword("modifiedPassword");
+        assertNotEquals(user1, user2);
+        assertNotEquals(user1.hashCode(), user2.hashCode());
+
+        user2.setPassword(password);
+
+        user2.setEnabled(!enabled);
+        assertNotEquals(user1, user2);
+        assertNotEquals(user1.hashCode(), user2.hashCode());
+
+        user2.setEnabled(enabled);
+
+        user2.setRole("ROLE_ADMIN");
+        assertNotEquals(user1, user2);
+        assertNotEquals(user1.hashCode(), user2.hashCode());
+
+        user2.setRole(role);
+
+        Set<Url> modifiedUrls = new HashSet<>();
+        modifiedUrls.add(Url.builder().originalUrl("https://modified.example.com").shortUrl("https://modified.short.url").build());
+        user2.setUrls(modifiedUrls);
+        assertNotEquals(user1, user2);
+        assertNotEquals(user1.hashCode(), user2.hashCode());
+
+        user2.setUrls(urls);
+
+        assertEquals(user1, user2);
+        assertEquals(user1.hashCode(), user2.hashCode());
+    }
 }
