@@ -4,7 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.within;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UrlTest {
@@ -142,5 +145,28 @@ class UrlTest {
         assertEquals(visitCount, url.getVisitCount());
         assertEquals(user, url.getUser());
 
+    }
+    @Test
+    void testEquals() {
+        LocalDateTime now = LocalDateTime.now();
+        Url url1 = Url.builder()
+                .originalUrl("https://example.com")
+                .shortUrl("https://short.url/abc")
+                .dateCreated(now)
+                .user(new User())
+                .build();
+
+        Url url2 = Url.builder()
+                .originalUrl("https://example.com")
+                .shortUrl("https://short.url/abc")
+                .dateCreated(now)
+                .user(new User())
+                .build();
+
+        assertEquals(url1, url2);
+
+        url2.setOriginalUrl("https://modified.example.com");
+
+        assertNotEquals(url1, url2);
     }
 }
