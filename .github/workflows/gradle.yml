@@ -69,7 +69,7 @@ jobs:
     - name: Check test coverage
       run: |
         coverage_percentage=$(grep -Po '(?<=<span class="cover">)[^<]+' build/reports/jacoco/test/html/index.html | tr -d '%')
-        if ((coverage_percentage < 0)); then
+        if ((coverage_percentage < 80)); then
           echo "Error: Code coverage is less than 80%."
           exit 1
         fi
