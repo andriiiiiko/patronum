@@ -3,7 +3,9 @@ package ua.patronum.quicklink.data.entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -103,5 +105,33 @@ class UserTest {
         assertEquals(enabled, user.isEnabled());
         assertEquals(role, user.getRole());
         assertEquals(urls, user.getUrls());
+    }
+
+    @Test
+    void testToString() {
+        Long id = 1L;
+        String username = "testUser";
+        String password = "password123";
+        boolean enabled = true;
+        String role = "ROLE_USER";
+        Set<Url> urls = new HashSet<>();
+
+        user.setId(id);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEnabled(enabled);
+        user.setRole(role);
+        user.setUrls(urls);
+
+        String expectedToString = "User(" +
+                "id=1, " +
+                "username=testUser, " +
+                "password=password123, " +
+                "enabled=true, " +
+                "role=ROLE_USER, " +
+                "urls=[]" +
+                ')';
+
+        assertEquals(expectedToString, user.toString());
     }
 }

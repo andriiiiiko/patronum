@@ -210,4 +210,25 @@ class UrlTest {
         assertEquals(url1, url2);
         assertEquals(url1.hashCode(), url2.hashCode());
     }
+
+    @Test
+    void testToString() {
+        LocalDateTime now = LocalDateTime.now();
+        url.setId(1L);
+        url.setDateCreated(now);
+        url.setExpirationDate(now.plusDays(30));
+        url.setVisitCount(5);
+
+        String expectedToString = "Url(" +
+                "id=1, " +
+                "originalUrl=https://example.com, " +
+                "shortUrl=https://short.url/abc, " +
+                "dateCreated=" + now + ", " +
+                "expirationDate=" + now.plusDays(30) + ", " +
+                "visitCount=5, " +
+                "user=User(id=null, username=null, password=null, enabled=false, role=null, urls=[])" +
+                ')';
+
+        assertEquals(expectedToString, url.toString());
+    }
 }
