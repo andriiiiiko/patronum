@@ -231,4 +231,59 @@ class UrlTest {
 
         assertEquals(expectedToString, url.toString());
     }
+
+    @Test
+    void testHashCode() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(30);
+
+        Url url1 = Url.builder()
+                .originalUrl("https://example.com")
+                .shortUrl("https://short.url/abc")
+                .dateCreated(now)
+                .expirationDate(expirationDate)
+                .visitCount(0)
+                .user(new User())
+                .build();
+
+        Url url2 = Url.builder()
+                .originalUrl("https://example.com")
+                .shortUrl("https://short.url/abc")
+                .dateCreated(now)
+                .expirationDate(expirationDate)
+                .visitCount(0)
+                .user(new User())
+                .build();
+
+        assertEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setOriginalUrl("https://modified.example.com");
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setOriginalUrl("https://example.com");
+
+        url2.setShortUrl("https://modified.short.url");
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setShortUrl("https://short.url/abc");
+
+        url2.setDateCreated(now.minusDays(1));
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setDateCreated(now);
+
+        url2.setExpirationDate(now.plusDays(1));
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setExpirationDate(null);
+
+        url2.setVisitCount(42);
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+
+        url2.setVisitCount(0);
+
+        url2.setUser(new User());
+
+        assertNotEquals(url1.hashCode(), url2.hashCode());
+    }
 }
