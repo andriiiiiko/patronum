@@ -103,9 +103,8 @@ public class UrlServiceImpl implements UrlService {
 
     private boolean isValidUrl(String inputUrl) {
         try {
-
-            if (!inputUrl.startsWith("http://") && !inputUrl.startsWith(URL_PREFIX)) {
-                inputUrl = "http://" + inputUrl;
+            if (!inputUrl.startsWith(URL_PREFIX)) {
+                inputUrl = URL_PREFIX + inputUrl;
             }
             new URI(inputUrl);
             int statusCode = getStatusCode(inputUrl);
@@ -120,7 +119,9 @@ public class UrlServiceImpl implements UrlService {
             URI url = new URI(inputUrl);
             HttpURLConnection connection = (HttpURLConnection) url.toURL().openConnection();
             connection.setRequestMethod("HEAD");
-            return connection.getResponseCode();
+            int responseCode = connection.getResponseCode();
+            connection.disconnect();
+            return responseCode;
         } catch (IOException | URISyntaxException ignore) {
             return -1;
         }
@@ -138,6 +139,8 @@ public class UrlServiceImpl implements UrlService {
         if (currentTime.isAfter(urls.getExpirationDate())) {
             return RedirectResponse.failed(Error.TIME_NOT_PASSED);
         }
+        urls.incrementVisitCount();
+        urlRepository.save(urls);
         return RedirectResponse.success(urls.getOriginalUrl());
     }
 
