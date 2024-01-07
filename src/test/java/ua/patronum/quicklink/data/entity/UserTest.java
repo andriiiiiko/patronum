@@ -25,7 +25,7 @@ class UserTest {
 
     @Test
     void testBuilder() {
-        Set<Url> expectedUrls = new HashSet<>(); // Set up any expected URLs
+        Set<Url> expectedUrls = new HashSet<>();
 
         User user = User.builder()
                 .id(1L)
