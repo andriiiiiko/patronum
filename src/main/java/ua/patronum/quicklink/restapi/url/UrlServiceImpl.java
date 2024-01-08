@@ -139,35 +139,43 @@ public class UrlServiceImpl implements UrlService {
         Url cachedUrl = urlCacheService.getCachedUrl(shortUrl);
 
         if (cachedUrl != null) {
-            if (currentTime.isAfter(cachedUrl.getExpirationDate())) {
-                urlCacheService.evictCache(shortUrl);
-                return RedirectResponse.failed(Error.TIME_NOT_PASSED);
-            }
-
-            cachedUrl.incrementVisitCount();
-            urlRepository.save(cachedUrl);
-
-            return RedirectResponse.success(cachedUrl.getOriginalUrl());
+            return handleCachedUrl(cachedUrl);
         } else {
-            Optional<Url> optionalUrl = urlRepository.findByShortUrl(shortUrl);
-
-            if (optionalUrl.isEmpty()) {
-                return RedirectResponse.failed(Error.INVALID_SHORT_URL);
-            }
-
-            Url url = optionalUrl.get();
-
-            if (currentTime.isAfter(url.getExpirationDate())) {
-                return RedirectResponse.failed(Error.TIME_NOT_PASSED);
-            }
-
-            url.incrementVisitCount();
-            urlRepository.save(url);
-
-            urlCacheService.cacheUrl(shortUrl, url);
-
-            return RedirectResponse.success(url.getOriginalUrl());
+            return handleNonCachedUrl(shortUrl);
         }
+    }
+
+    private RedirectResponse handleCachedUrl(Url cachedUrl) {
+        if (currentTime.isAfter(cachedUrl.getExpirationDate())) {
+            urlCacheService.evictCache(cachedUrl.getShortUrl());
+            return RedirectResponse.failed(Error.TIME_NOT_PASSED);
+        }
+
+        cachedUrl.incrementVisitCount();
+        urlRepository.save(cachedUrl);
+
+        return RedirectResponse.success(cachedUrl.getOriginalUrl());
+    }
+
+    private RedirectResponse handleNonCachedUrl(String shortUrl) {
+        Optional<Url> optionalUrl = urlRepository.findByShortUrl(shortUrl);
+
+        if (optionalUrl.isEmpty()) {
+            return RedirectResponse.failed(Error.INVALID_SHORT_URL);
+        }
+
+        Url url = optionalUrl.get();
+
+        if (currentTime.isAfter(url.getExpirationDate())) {
+            return RedirectResponse.failed(Error.TIME_NOT_PASSED);
+        }
+
+        url.incrementVisitCount();
+        urlRepository.save(url);
+
+        urlCacheService.cacheUrl(shortUrl, url);
+
+        return RedirectResponse.success(url.getOriginalUrl());
     }
 
     @Override
