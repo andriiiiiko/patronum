@@ -1,45 +1,70 @@
 package ua.patronum.quicklink.restapi.url;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.cache.Cache;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import ua.patronum.quicklink.data.entity.Url;
 
-import java.util.Objects;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(MockitoExtension.class)
 class UrlCacheServiceTest {
 
-    private UrlCacheService urlCacheService;
+    private static final String TEST_SHORT_URL = "testShortUrl";
+    private static final String TEST_ORIGINAL_URL = "testOriginalUrl";
+
+    @Mock
     private ConcurrentMapCacheManager cacheManager;
 
-    @BeforeEach
-    void setUp() {
-        cacheManager = new ConcurrentMapCacheManager();
-        urlCacheService = new UrlCacheService(cacheManager);
-    }
+    @Mock
+    private Cache cache;
+
+    @InjectMocks
+    private UrlCacheService urlCacheService;
 
     @Test
     void testGetCachedUrl() {
+        Url cachedUrl = new Url();
+        cachedUrl.setOriginalUrl(TEST_ORIGINAL_URL);
+
+        when(cacheManager.getCache(anyString())).thenReturn(cache);
+        when(cache.get(eq(TEST_SHORT_URL))).thenReturn(() -> cachedUrl);
+
+        Url result = urlCacheService.getCachedUrl(TEST_SHORT_URL);
+
+        assertNotNull(result);
+        assertEquals(TEST_ORIGINAL_URL, result.getOriginalUrl());
+    }
+
+    @Test
+    void testEvictCache() {
+        urlCacheService.evictCache(TEST_SHORT_URL);
+
+        assertEquals(TEST_SHORT_URL, urlCacheService.getShortUrl());
+    }
+
+    @Test
+    void testCacheUrl() {
         Url url = new Url();
-        String shortUrl = "testShortUrl";
+        url.setOriginalUrl(TEST_ORIGINAL_URL);
 
-        assertNotNull(cacheManager);
-        assertNotNull(cacheManager.getCache("OriginalUrl"));
-        Objects.requireNonNull(cacheManager.getCache("OriginalUrl")).put(shortUrl, url);
+        when(cacheManager.getCache(anyString())).thenReturn(cache);
 
-        assertNotNull(urlCacheService);
-        assertNotNull(cacheManager);
-        assertNotNull(cacheManager.getCache("OriginalUrl"));
+        urlCacheService.cacheUrl(TEST_SHORT_URL, url);
 
-        Object cachedValue = Objects.requireNonNull(Objects.requireNonNull(cacheManager.getCache("OriginalUrl")).get(shortUrl)).get();
+        verify(cache).put(eq(TEST_SHORT_URL), eq(url));
+    }
 
-        assertTrue(cachedValue instanceof Url);
+    @Test
+    void testCheckCacheError() {
+        Error result = urlCacheService.checkCacheError("CACHE_ERROR");
 
-        Url cachedUrl = (Url) cachedValue;
-
-        assertNotNull(cachedUrl);
-        assertEquals(url, cachedUrl);
+        assertEquals(Error.CACHE_ERROR, result);
     }
 }

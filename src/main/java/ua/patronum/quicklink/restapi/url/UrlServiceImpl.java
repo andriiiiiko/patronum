@@ -146,36 +146,35 @@ public class UrlServiceImpl implements UrlService {
     }
 
     private RedirectResponse handleCachedUrl(Url cachedUrl) {
-        if (currentTime.isAfter(cachedUrl.getExpirationDate())) {
+        if (cachedUrl != null && currentTime.isAfter(cachedUrl.getExpirationDate())) {
             urlCacheService.evictCache(cachedUrl.getShortUrl());
             return RedirectResponse.failed(Error.TIME_NOT_PASSED);
         }
 
-        cachedUrl.incrementVisitCount();
-        urlRepository.save(cachedUrl);
-
-        return RedirectResponse.success(cachedUrl.getOriginalUrl());
+        return Optional.ofNullable(cachedUrl)
+                .map(url -> {
+                    url.incrementVisitCount();
+                    urlRepository.save(url);
+                    return RedirectResponse.success(url.getOriginalUrl());
+                })
+                .orElse(RedirectResponse.failed(Error.INVALID_SHORT_URL));
     }
 
     private RedirectResponse handleNonCachedUrl(String shortUrl) {
         Optional<Url> optionalUrl = urlRepository.findByShortUrl(shortUrl);
 
-        if (optionalUrl.isEmpty()) {
-            return RedirectResponse.failed(Error.INVALID_SHORT_URL);
-        }
+        return optionalUrl.map(url -> {
+            if (currentTime.isAfter(url.getExpirationDate())) {
+                return RedirectResponse.failed(Error.TIME_NOT_PASSED);
+            }
 
-        Url url = optionalUrl.get();
+            url.incrementVisitCount();
+            urlRepository.save(url);
 
-        if (currentTime.isAfter(url.getExpirationDate())) {
-            return RedirectResponse.failed(Error.TIME_NOT_PASSED);
-        }
+            urlCacheService.cacheUrl(shortUrl, url);
 
-        url.incrementVisitCount();
-        urlRepository.save(url);
-
-        urlCacheService.cacheUrl(shortUrl, url);
-
-        return RedirectResponse.success(url.getOriginalUrl());
+            return RedirectResponse.success(url.getOriginalUrl());
+        }).orElse(RedirectResponse.failed(Error.INVALID_SHORT_URL));
     }
 
     @Override
