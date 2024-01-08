@@ -16,10 +16,8 @@ class CacheConfigTest {
 
     @Test
     void testCacheManagerExists() {
-        // перевіряємо, чи бін cacheManager існує
         assertNotNull(cacheManager);
 
-        // перевіряємо, чи існує кеш з ім'ям "OriginalUrl"
         Cache originalUrlCache = cacheManager.getCache("OriginalUrl");
         assertNotNull(originalUrlCache);
     }
