@@ -165,7 +165,7 @@ public class UrlServiceImpl implements UrlService {
         }
         Url url = optionalUrl.get();
 
-        if (currentTime.isAfter(url.getExpirationDate())) {
+        if (currentTime.isBefore(url.getExpirationDate())) {
             return ExtensionTimeResponse.failed(Error.TIME_NOT_PASSED);
         }
 
