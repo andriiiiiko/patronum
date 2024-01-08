@@ -35,15 +35,27 @@ class UrlServiceTest {
 
     private User user;
     private List<Url> mockUrls;
+    private String shortUrl;
+    private Url mockUrl;
+    private Url urlToDelete;
+    private Long urlIdToDelete;
 
     @BeforeEach
     void setUp() {
-        user = new User(1L, "testUser", "Password2024", true, "ROLE_ADMIN", new HashSet<>());
+        user = new User(1L, "testUser", "Password2024", true,
+                "ROLE_ADMIN", new HashSet<>());
 
         mockUrls = Arrays.asList(
-                new Url(1L, "https://www.example.com/1", "abc123", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user),
-                new Url(2L, "https://www.example.com/2", "def456", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user)
+                new Url(1L, "https://www.example.com/1", "abc123",
+                        LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user),
+                new Url(2L, "https://www.example.com/2", "def456",
+                        LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user)
         );
+        shortUrl = "abc123";
+        mockUrl = new Url(1L, "https://www.example.com/", shortUrl,
+                LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, null);
+        urlToDelete = new Url(urlIdToDelete, "https://www.example.com/delete", "delete123",
+                LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user);
     }
 
     @Test
@@ -119,7 +131,9 @@ class UrlServiceTest {
 
         List<UrlDto> urlDtos = response.getUrls();
         long activeUrlsCount = mockUrls.stream()
-                .filter(url -> url.getExpirationDate() != null && url.getExpirationDate().isAfter(LocalDateTime.now()))
+                .filter(url -> url.getExpirationDate() != null && url
+                        .getExpirationDate()
+                        .isAfter(LocalDateTime.now()))
                 .count();
         assertEquals(activeUrlsCount, urlDtos.size());
     }
@@ -127,10 +141,8 @@ class UrlServiceTest {
     @Test
     void test_Redirect_Original_Url_Success() {
 
-        String shortUrl = "abc123";
         RedirectRequest request = new RedirectRequest();
         request.setShortUrl(shortUrl);
-        Url mockUrl = new Url(1L, "https://www.example.com/", shortUrl, LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, null);
 
         when(urlRepository.findByShortUrl(shortUrl)).thenReturn(Optional.of(mockUrl));
 
@@ -141,10 +153,10 @@ class UrlServiceTest {
     @Test
     void test_Redirect_Original_Url_Failed() {
 
-        String shortUrl = "abc123";
         RedirectRequest request = new RedirectRequest();
         request.setShortUrl(shortUrl);
-        Url mockUrl = new Url(1L, "https://www.example.com/", shortUrl, LocalDateTime.now().minusMonths(3L), LocalDateTime.now().minusMonths(3L).plusDays(30L), 0, null);
+        mockUrl.setDateCreated(LocalDateTime.now().minusMonths(3L));
+        mockUrl.setExpirationDate();
 
         when(urlRepository.findByShortUrl(shortUrl)).thenReturn(Optional.of(mockUrl));
 
@@ -156,8 +168,7 @@ class UrlServiceTest {
     @Test
     void test_Delete_By_Id_Success() {
 
-        Long urlIdToDelete = 1L;
-        Url urlToDelete = new Url(urlIdToDelete, "https://www.example.com/delete", "delete123", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user);
+        urlIdToDelete = 1L;
 
         when(urlRepository.findById(urlIdToDelete)).thenReturn(Optional.of(urlToDelete));
 
@@ -170,8 +181,7 @@ class UrlServiceTest {
     @Test
     void test_Delete_By_Id_Failed() {
 
-        Long urlIdToDelete = 10L;
-        Url urlToDelete = new Url(1L, "https://www.example.com/delete", "delete123", LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, user);
+        urlIdToDelete = 10L;
 
         when(urlRepository.findById(urlIdToDelete)).thenReturn(Optional.of(urlToDelete));
 
@@ -184,10 +194,8 @@ class UrlServiceTest {
     @Test
     void test_Extension_Time_Response_Success() {
 
-        String shortUrl = "abc123";
         ExtensionTimeRequest request = new ExtensionTimeRequest();
         request.setShortUrl(shortUrl);
-        Url mockUrl = new Url(1L, "https://www.example.com/", shortUrl, LocalDateTime.now(), LocalDateTime.now().plusDays(30L), 0, null);
 
         when(urlRepository.findByShortUrl(shortUrl)).thenReturn(Optional.of(mockUrl));
 
@@ -198,10 +206,10 @@ class UrlServiceTest {
     @Test
     void test_Extension_Time_Response_Failed() {
 
-        String shortUrl = "abc123";
         ExtensionTimeRequest request = new ExtensionTimeRequest();
         request.setShortUrl(shortUrl);
-        Url mockUrl = new Url(1L, "https://www.example.com/", shortUrl, LocalDateTime.now().minusDays(2L), LocalDateTime.now().minusDays(2L).plusDays(30L), 0, null);
+        mockUrl.setDateCreated(LocalDateTime.now().minusDays(2L));
+        mockUrl.setExpirationDate();
 
         when(urlRepository.findByShortUrl(shortUrl)).thenReturn(Optional.of(mockUrl));
 
