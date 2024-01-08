@@ -57,4 +57,26 @@ tasks.jacocoTestReport {
         xml.required = true
         html.required = true
     }
+     afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['**/ua/patronum/quicklink/data/**',
+                              '**/ua/patronum/quicklink/restapi/auth/LoginRequest.class',
+                              '**/ua/patronum/quicklink/restapi/auth/LoginResponse.class',
+                              '**/ua/patronum/quicklink/restapi/auth/RegistrationRequest.class',
+                              '**/ua/patronum/quicklink/restapi/auth/RegistrationResponse.class',
+                              '**/ua/patronum/quicklink/restapi/url/CreateUrlRequest.class',
+                              '**/ua/patronum/quicklink/restapi/url/CreateUrlResponse.class',
+                              '**/ua/patronum/quicklink/restapi/url/DeleteUrlResponse.class',
+                              '**/ua/patronum/quicklink/restapi/url/ExtensionTimeRequest.class',
+                              '**/ua/patronum/quicklink/restapi/url/ExtensionTimeResponse.class',
+                              '**/ua/patronum/quicklink/restapi/url/GetAllActiveUrlsResponse.class',
+                              '**/ua/patronum/quicklink/restapi/url/GetAllUrlsResponse.class',
+                              '**/ua/patronum/quicklink/restapi/url/GetAllUserActiveUrlsResponse.class',
+                              '**/ua/patronum/quicklink/restapi/url/GetAllUserUrlsResponse.class',
+                              '**/ua/patronum/quicklink/restapi/url/RedirectRequest.class',
+                              '**/ua/patronum/quicklink/restapi/url/RedirectResponse.class',
+                              '**/ua/patronum/quicklink/restapi/url/UrlDto.class'])
+        })
+    }
 }
