@@ -3,9 +3,7 @@ package ua.patronum.quicklink.data.entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,12 +70,20 @@ class UserTest {
     @Test
     void testInequality() {
         Set<Url> urls1 = new HashSet<>();
-        urls1.add(Url.builder().originalUrl("https://example1.com").shortUrl("https://short1.url").build());
-        User user1 = new User(1L, "user1", "password1", true, "ROLE_USER", urls1);
+        urls1.add(Url.builder()
+                .originalUrl("https://example1.com")
+                .shortUrl("https://short1.url")
+                .build());
+        User user1 = new User
+                (1L, "user1", "password1", true, "ROLE_USER", urls1);
 
         Set<Url> urls2 = new HashSet<>();
-        urls2.add(Url.builder().originalUrl("https://example2.com").shortUrl("https://short2.url").build());
-        User user2 = new User(2L, "user2", "password2", false, "ROLE_ADMIN", urls2);
+        urls2.add(Url.builder()
+                .originalUrl("https://example2.com")
+                .shortUrl("https://short2.url")
+                .build());
+        User user2 = new User
+                (2L, "user2", "password2", false, "ROLE_ADMIN", urls2);
 
         assertNotEquals(user1, user2);
     }
@@ -90,7 +96,10 @@ class UserTest {
         boolean enabled = true;
         String role = "ROLE_USER";
         Set<Url> urls = new HashSet<>();
-        urls.add(Url.builder().originalUrl("https://example.com").shortUrl("https://short.url").build());
+        urls.add(Url.builder()
+                .originalUrl("https://example.com")
+                .shortUrl("https://short.url")
+                .build());
 
         user.setId(id);
         user.setUsername(username);
@@ -143,7 +152,10 @@ class UserTest {
         boolean enabled = true;
         String role = "ROLE_USER";
         Set<Url> urls = new HashSet<>();
-        urls.add(Url.builder().originalUrl("https://example.com").shortUrl("https://short.url").build());
+        urls.add(Url.builder()
+                .originalUrl("https://example.com")
+                .shortUrl("https://short.url")
+                .build());
 
         User user1 = User.builder()
                 .id(id)
@@ -191,7 +203,10 @@ class UserTest {
         user2.setRole(role);
 
         Set<Url> modifiedUrls = new HashSet<>();
-        modifiedUrls.add(Url.builder().originalUrl("https://modified.example.com").shortUrl("https://modified.short.url").build());
+        modifiedUrls.add(Url.builder()
+                .originalUrl("https://modified.example.com")
+                .shortUrl("https://modified.short.url")
+                .build());
         user2.setUrls(modifiedUrls);
         assertNotEquals(user1, user2);
         assertNotEquals(user1.hashCode(), user2.hashCode());
@@ -210,7 +225,10 @@ class UserTest {
         boolean enabled = true;
         String role = "ROLE_USER";
         Set<Url> urls = new HashSet<>();
-        urls.add(Url.builder().originalUrl("https://example.com").shortUrl("https://short.url").build());
+        urls.add(Url.builder()
+                .originalUrl("https://example.com")
+                .shortUrl("https://short.url")
+                .build());
 
         User user1 = User.builder()
                 .id(id)
@@ -254,7 +272,10 @@ class UserTest {
         user2.setRole(role);
 
         Set<Url> modifiedUrls = new HashSet<>();
-        modifiedUrls.add(Url.builder().originalUrl("https://modified.example.com").shortUrl("https://modified.short.url").build());
+        modifiedUrls.add(Url.builder()
+                .originalUrl("https://modified.example.com")
+                .shortUrl("https://modified.short.url")
+                .build());
         user2.setUrls(modifiedUrls);
         assertNotEquals(user1.hashCode(), user2.hashCode());
 

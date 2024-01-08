@@ -68,7 +68,7 @@ class UrlTest {
 
         assertEquals(url, otherUrl);
         assertEquals(url.hashCode(), otherUrl.hashCode());
-        assertNotEquals(url, null);
+        assertNotEquals(null, url);
     }
 
     @Test
@@ -168,7 +168,7 @@ class UrlTest {
         assertNotEquals(url1, url2);
         assertNotEquals(url1.hashCode(), url2.hashCode());
 
-        url2.setOriginalUrl("https://example.com"); // Повертаємо оригінальну адресу для подальших перевірок
+        url2.setOriginalUrl("https://example.com");
 
         url2.setShortUrl("https://modified.short.url");
         assertNotEquals(url1, url2);
