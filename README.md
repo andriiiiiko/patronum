@@ -126,7 +126,7 @@ Also, in order to start the project you need to generate `docker-image`
 
 ### Diana Paievska
 
-- __[LinkedIn](https://www.linkedin.com/in/%D0%B4%D1%96%D0%B0%D0%BD%D0%B0-%D0%BF%D0%B0%D1%94%D0%B2%D1%81%D1%8C%D0%BA%D0%B0-03aa3a1aa/?trk=contact-info)
+- __[LinkedIn](https://www.linkedin.com/in/%D0%B4%D1%96%D0%B0%D0%BD%D0%B0-%D0%BF%D0%B0%D1%94%D0%B2%D1%81%D1%8C%D0%BA%D0%B0-03aa3a1aa/?trk=contact-info)__
 - __[GitHub](https://github.com/paievska)__
 
 ### Vitaliy Volokitkin
