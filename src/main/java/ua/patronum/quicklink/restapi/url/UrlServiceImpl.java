@@ -145,7 +145,7 @@ public class UrlServiceImpl implements UrlService {
         }
     }
 
-    private RedirectResponse handleCachedUrl(Url cachedUrl) {
+    RedirectResponse handleCachedUrl(Url cachedUrl) {
         if (cachedUrl.getExpirationDate() != null && currentTime.isAfter(cachedUrl.getExpirationDate())) {
             urlCacheService.evictCache(cachedUrl.getShortUrl());
             return RedirectResponse.failed(Error.TIME_NOT_PASSED);
