@@ -9,5 +9,5 @@ public enum Error {
     EXPIRED_URL,
     TIME_NOT_PASSED,
     INVALID_ORIGINAL_URL,
-    SOME_ERROR_MESSAGE
+    CACHE_ERROR
 }
