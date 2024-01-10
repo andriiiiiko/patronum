@@ -55,6 +55,11 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public CreateUrlResponse createUrl(String username, CreateUrlRequest request) {
 
+        if(!request.getOriginalUrl().startsWith(URL_PREFIX)){
+            String originalUrl = URL_PREFIX + request.getOriginalUrl();
+            request.setOriginalUrl(originalUrl);
+        }
+
         User user = userService.findByUsername(username);
         Optional<Error> validationError = validateCreateFields(request);
 
@@ -96,7 +101,8 @@ public class UrlServiceImpl implements UrlService {
     }
 
     public String generateShortUrl(int length) {
-        return URL_PREFIX + UUID.randomUUID().toString().subSequence(0, length);
+        String shortUrlWithoutProtocol = UUID.randomUUID().toString().substring(0, length);
+        return URL_PREFIX + shortUrlWithoutProtocol;
     }
 
     private Optional<Error> validateCreateFields(CreateUrlRequest request) {
@@ -201,7 +207,8 @@ public class UrlServiceImpl implements UrlService {
 
     private List<UrlDto> filterActivesUrlsTest(List<Url> allUrls, boolean isActives) {
         return allUrls.stream()
-                .filter(url -> !isActives || url.getExpirationDate() == null || url.getExpirationDate().isAfter(LocalDateTime.now()))
+                .filter(url -> !isActives || url.getExpirationDate() == null 
+                        || url.getExpirationDate().isAfter(LocalDateTime.now()))
                 .map(url -> UrlDto.builder()
                         .id(url.getId())
                         .originalUrl(url.getOriginalUrl())
