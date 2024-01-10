@@ -141,12 +141,12 @@ public class UrlServiceImpl implements UrlService {
         if (cachedUrl != null) {
             return handleCachedUrl(cachedUrl);
         } else {
-            return handleNonCachedUrl(shortUrl);
+            return RedirectResponse.failed(Error.INVALID_SHORT_URL);
         }
     }
 
     private RedirectResponse handleCachedUrl(Url cachedUrl) {
-        if (currentTime.isAfter(cachedUrl.getExpirationDate())) {
+        if (cachedUrl.getExpirationDate() != null && currentTime.isAfter(cachedUrl.getExpirationDate())) {
             urlCacheService.evictCache(cachedUrl.getShortUrl());
             return RedirectResponse.failed(Error.TIME_NOT_PASSED);
         }
@@ -155,23 +155,6 @@ public class UrlServiceImpl implements UrlService {
         urlRepository.save(cachedUrl);
 
         return RedirectResponse.success(cachedUrl.getOriginalUrl());
-    }
-
-    private RedirectResponse handleNonCachedUrl(String shortUrl) {
-        Optional<Url> optionalUrl = urlRepository.findByShortUrl(shortUrl);
-
-        return optionalUrl.map(url -> {
-            if (currentTime.isAfter(url.getExpirationDate())) {
-                return RedirectResponse.failed(Error.TIME_NOT_PASSED);
-            }
-
-            url.incrementVisitCount();
-            urlRepository.save(url);
-
-            urlCacheService.cacheUrl(shortUrl, url);
-
-            return RedirectResponse.success(url.getOriginalUrl());
-        }).orElse(RedirectResponse.failed(Error.INVALID_SHORT_URL));
     }
 
     @Override
