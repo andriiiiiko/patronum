@@ -15,7 +15,10 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UrlCacheService {
 
+    @Getter
     private static final String CACHE_NAME = "OriginalUrl";
+
+    @Getter
     private static final String CACHE_ERROR = "CACHE_ERROR";
 
     @Getter
