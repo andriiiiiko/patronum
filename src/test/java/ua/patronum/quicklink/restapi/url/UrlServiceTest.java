@@ -30,6 +30,9 @@ class UrlServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    UrlCacheService cacheService;
+
     @InjectMocks
     private UrlServiceImpl urlService;
 
