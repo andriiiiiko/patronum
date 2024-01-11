@@ -66,13 +66,5 @@ jobs:
         name: jacoco-report
         path: build/reports/jacoco/test/html
 
-    - name: Check test coverage
-      run: |
-        coverage_percentage=$(grep -Po '(?<=<span class="cover">)[^<]+' build/reports/jacoco/test/html/index.html | tr -d '%')
-        if ((coverage_percentage < 0)); then
-          echo "Error: Code coverage is less than 80%."
-          exit 1
-        fi
-    - name: Finalize Test Coverage
-      run: echo "Test coverage over 80%!"
-
+    - name: Finalize Report of Coverage
+      run: echo "Report created!"
