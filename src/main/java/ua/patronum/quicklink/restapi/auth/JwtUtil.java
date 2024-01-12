@@ -20,7 +20,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "SECRETKEYSECRETKEYSECRETKEYSECRETKEYSECRETKEYSECRETKEY";
+    private static final String SECRET_KEY = "OutFirstJwtSecretOutFirstJwtSecretOutFirstJwtSecret";
 
     private final UserDetailsService userDetailsService;
 

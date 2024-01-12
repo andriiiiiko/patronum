@@ -50,7 +50,7 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public CreateUrlResponse createUrl(String username, CreateUrlRequest request) {
 
-        if(!request.getOriginalUrl().startsWith(URL_PREFIX)){
+        if (!request.getOriginalUrl().startsWith(URL_PREFIX)) {
             String originalUrl = URL_PREFIX + request.getOriginalUrl();
             request.setOriginalUrl(originalUrl);
         }
@@ -145,9 +145,13 @@ public class UrlServiceImpl implements UrlService {
         if (currentTime.isAfter(urls.getExpirationDate())) {
             return RedirectResponse.failed(Error.TIME_NOT_PASSED);
         }
-        urls.incrementVisitCount();
-        urlRepository.save(urls);
+        incrimentVision(urls);
         return RedirectResponse.success(urls.getOriginalUrl());
+    }
+
+    public void incrimentVision(Url url) {
+        url.incrementVisitCount();
+        urlRepository.save(url);
     }
 
     @Override
@@ -177,7 +181,7 @@ public class UrlServiceImpl implements UrlService {
 
     private List<UrlDto> filterActivesUrlsTest(List<Url> allUrls, boolean isActives) {
         return allUrls.stream()
-                .filter(url -> !isActives || url.getExpirationDate() == null 
+                .filter(url -> !isActives || url.getExpirationDate() == null
                         || url.getExpirationDate().isAfter(LocalDateTime.now()))
                 .map(url -> UrlDto.builder()
                         .id(url.getId())

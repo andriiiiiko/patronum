@@ -164,6 +164,19 @@ class UrlServiceTest {
         assertEquals(Error.TIME_NOT_PASSED, response.getError());
         verify(urlRepository, never()).save(any(Url.class));
     }
+    @Test
+    void test_Redirect_Original_Url_Invalid_Short_Url_Failed() {
+
+        RedirectRequest request = new RedirectRequest();
+        request.setShortUrl(shortUrl);
+        mockUrl.setExpirationDate();
+
+        when(urlRepository.findByShortUrl(shortUrl)).thenReturn(Optional.empty());
+
+        RedirectResponse response = urlService.redirectOriginalUrl(request);
+        assertEquals(Error.INVALID_SHORT_URL, response.getError());
+        verify(urlRepository, never()).save(any(Url.class));
+    }
 
     @Test
     void test_Delete_By_Id_Success() {
