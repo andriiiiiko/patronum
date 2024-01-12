@@ -96,7 +96,7 @@ public class AuthService {
 
         if (Objects.isNull(request.getPassword())
                 || request.getPassword().length() > MAX_PASSWORD_LENGTH) {
-            return Optional.of(LoginResponse.Error.INVALID_PASSWORD);
+            return Optional.of(LoginResponse.Error.INVALID_MAX_PASSWORD);
         }
 
         return Optional.empty();
