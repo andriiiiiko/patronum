@@ -27,8 +27,7 @@ including IntelliJ IDEA, PostgreSQL, Docker, GitHub, and more.
 - PostgreSQL
 - JWT
 - FlyWay
-- Swagger
-- OpenApi 3.0
+- Swagger/OpenApi 3.0
 - Mockito
 - CI pipeline (GitHub actions)
 - Docker
