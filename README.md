@@ -1,13 +1,11 @@
-# Java Quick Link App ![Java](https://cdn3.emoji.gg/emojis/java.png)
+# Java Patronum App ![Logo](src/main/resources/static/images/logo.png)
 
 ## Table of contents
 
 * [About the project](#about-the-project)
 * [Project requirements](#project-requirements)
 * [How to start the project](#how-to-start-the-project)
-
-- __[Quick Link Frontend React (GitHub Repo)](https://github.com/andriiiiiko/quick-link-frontend)__
-
+* [Patronum React (GitHub Repo)](https://github.com/andriiiiiko/patronum-react)
 * [About the team members](#about-the-team-members)
 
 ## About the project
